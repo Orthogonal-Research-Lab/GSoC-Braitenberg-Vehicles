@@ -14,6 +14,11 @@ Ziyi Gong   [repository](https://github.com/Orthogonal-Research-Lab/Modeling-Neu
 ### Schedule for proposals and acceptance:  
 May 6 (18:00 UTC):	Accepted student proposals announced
 
+Congratulations to Stefan Dvoretskii for his winning proposal!
+
+Thanks to Ziyi Gong and Jesse Parent for joining our working group this summer, and thanks to all of our applicants for their time and contributions.
+
+
 May 6 - May 27: Community Period
 
 * get acquainted with the project working group!
