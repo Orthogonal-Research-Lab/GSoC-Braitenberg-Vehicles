@@ -1,0 +1,9 @@
+.gradle/
+gradle*
+!gradlew*
+.idea/
+*.gradle
+!gradle/wrapper
+.attach*
+out/
+build/
