@@ -5,4 +5,4 @@ To learn more about c302 and its implementation in NeuroML, please see:
 Gleeson et.al, [c302: a multiscale framework for modelling the nervous system of _Caenorhabditis elegans_](https://royalsocietypublishing.org/doi/10.1098/rstb.2017.0379).
 _Philosophical Transactions of the Royal Society B_, 373. doi:10.1098/rstb.2017.0379
 
-The OpenWorm Foundation also sponsors development of the [ChannelWorm project](https://github.com/openworm/ChannelWorm2), which allows people to model ion channel activity at the single neuron level. The ChannelWorm database references actual ion channels found in adult _C. elegans_ neurons, and utilizes the c302 framework.  
+The OpenWorm Foundation also sponsors development of the [ChannelWorm project](https://github.com/openworm/ChannelWorm2), which allows people to model ion channel activity at the single neuron level. The [ChannelWorm curation](https://github.com/openworm/ChannelWorm) references actual ion channels found in adult _C. elegans_ neurons, and utilizes NeuroML and the c302 framework.  
