@@ -1,21 +1,19 @@
 package view
 
 import agent.Vehicle
-import fac
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.AnchorPane
 import model.SimModel
+import model.WorldObject
 import presenter.RenderReadyEvent
 import presenter.SimPresenter
 import tornadofx.*
-import world.WorldObject
 
 class SimView : View() {
     val presenter: SimPresenter = SimPresenter()
     val canvas: AnchorPane
-    val registeredVehiclesRender: MutableList<Vehicle.VehicleRender> = mutableListOf()
-    val frameRate = 30
+    val frameRate = 1
 
     override val root = vbox {
         anchorpane {}
@@ -45,7 +43,6 @@ class SimView : View() {
                 frameRate.toByte()
             )
         } ui { }
-        fac(5)
     }
 
     fun renderWorld(model: SimModel) {
@@ -61,13 +58,10 @@ class SimView : View() {
         vehicles: Set<Vehicle>
     ) { //TODO
         vehicles.forEach {
-            if (!registeredVehiclesRender.contains(it.render)) { //add new
-                with(canvas) {
-                    it.render.list.forEach { bp ->
-                        this += bp
-                    }
+            with(canvas) {
+                it.bodyParts.forEach { bp ->
+                    this += bp.shape
                 }
-                registeredVehiclesRender.add(it.render)
             }
         }
     }

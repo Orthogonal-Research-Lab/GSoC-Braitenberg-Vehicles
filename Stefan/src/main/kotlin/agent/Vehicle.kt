@@ -3,15 +3,18 @@ package agent
 import Dot
 import DoubleVector
 import angleToXAxis
-import center
 import check
+import degrees
 import javafx.animation.KeyValue
-import javafx.scene.layout.StackPane
 import javafx.scene.paint.Color
+import javafx.scene.shape.Circle
 import javafx.scene.shape.Rectangle
-import javafx.scene.shape.Shape
+import model.SimModel
+import model.WorldObject
 import sum
-import world.WorldObject
+import tornadofx.*
+import kotlin.math.abs
+import kotlin.math.log10
 
 class Vehicle(
     val body: Body,
@@ -19,82 +22,91 @@ class Vehicle(
     val sensors: Array<Sensor>,
     var speed: DoubleVector
 ) {
-    val render = VehicleRender(body, sensors, motors)
+    val bodyParts: MutableSet<BodyPart>
     var oldSpeed: DoubleVector = DoubleVector(0.0, 0.0) //used for rotation computation
 
-    /**
-     * Changes velocity and angle of current vehicle, based on sensors affected by objects in the world.
-     */
-    fun updateMovementVector(affectors: Collection<WorldObject>) {
-        var velVec: DoubleVector = this.speed
-        oldSpeed = this.speed.copy()
-        affectors.forEach {
-            val wo = it
-            sensors.forEach { ite ->
-                velVec += wo.effectOnDistance(
-                    ite.x, ite.y
-                ) * ite.polarity
-            }
-        }
+    init {
+        bodyParts = mutableSetOf(body)
+        bodyParts.addAll(motors)
+        bodyParts.addAll(sensors)
     }
 
-    fun angleToX(): Double {
-        return angleToXAxis(arrayOf(Dot(0.0, 0.0), Dot(this.speed.x, this.speed.y)))
-    }
+    fun getAngle() = angleToXAxis(Dot(this.speed.x, this.speed.y))
+    fun getX() = this.body.shape.layoutX
+    fun getY() = this.body.shape.layoutY
+
 
     /**
-     * Used for JavaFX transformation.
+     * Changes velocity and dAngle of current vehicle, based on sensors affected by objects in the world.
      */
-    fun rotateAngle(): Double {
-        return angleToXAxis(
-            arrayOf(
-                Dot(0.0, 0.0),
-                Dot(this.oldSpeed.x, this.oldSpeed.y)
-            )
-        ) - this.angleToX()
+    fun updateSpeed(affectors: Collection<WorldObject>) {
+        // save for angle computation
+        this.oldSpeed = this.speed.copy()
+        sensors.forEach {
+            this.speed += it.percept(affectors)
+        }
+        repulseFromWalls()
+    }
+
+    /**
+     * Repulses vehicle off the wall, when it is close
+     */
+    private fun repulseFromWalls() {
+        val aspiredX = this.getX() + this.speed.x
+        val aspiredY = this.getY() + this.speed.y
+
+        val (fromLeft, fromUp) = arrayOf(this.getX(), this.getY())
+        if (fromLeft == 0.0) return //just initialized
+        val (fromRight, fromDown) = arrayOf(abs(SimModel.worldEnd.x - fromLeft), abs(SimModel.worldEnd.y - fromUp))
+        // truncate speed vectors to out of bounds
+        if (aspiredX > SimModel.worldEnd.x) this.speed.x = (SimModel.worldEnd.x - this.getX()) * 0.9
+        if (aspiredY > SimModel.worldEnd.y) this.speed.y = (SimModel.worldEnd.y - this.getY()) * 0.9
+        // TODO half-Morse potential?
+        this.speed.x += abs(log10(fromLeft)) - abs(log10(fromRight)) // add in the positive x, substract in negative (fromRight
+        this.speed.y += abs(log10(fromUp)) - abs(log10(fromDown))
+    }
+
+    /**
+     * Next rotation angle, given in radians.
+     */
+    fun rotationAngle(): Double {
+        // Delta of the angles of old and current speed vector
+        return this.getAngle() - angleToXAxis(
+            Dot(this.oldSpeed.x, this.oldSpeed.y)
+        )
     }
 
 
-    inner class VehicleRender(body: Body, sensors: Array<Sensor>, motors: Array<Motor>) : StackPane() {
-        val list: MutableList<Shape> = mutableListOf()
-
-        init {
-            list.add(body.shape)
-            motors.forEach { list.add(it.shape) }
-            sensors.forEach { list.add(it.shape) }
+    /**
+     * Takes speed and dAngle now and calculates transformations for each body part
+     */
+    fun calcCurrentUpdate(affectors: MutableSet<WorldObject>): Set<KeyValue> {
+        this.updateSpeed(affectors)
+        val out: MutableSet<KeyValue> = mutableSetOf()
+        // rotate body
+        val rotateAngle = this.rotationAngle()
+        out.add(KeyValue(body.shape.rotateProperty(), body.shape.rotate + rotateAngle.degrees()))
+        // move parts of the body
+        this.body.centerOffset.rotate(rotateAngle.rad)
+        val put = { bp: BodyPart ->
+            val shape: Circle = bp.shape as Circle //TODO generalize cast
+            val oldBPOffset = bp.rotateAroundCenter(rotateAngle.rad)
+            // center offset is already angle updated
+            val shiftX = sum(this.speed.x, -oldBPOffset.x, bp.centerOffset.x) //+radius
+            val shiftY = sum(this.speed.y, -oldBPOffset.y, bp.centerOffset.y)
+            out.add(KeyValue(shape.translateXProperty(), shiftX))
+            out.add(KeyValue(shape.translateYProperty(), shiftY))
         }
-
-        fun center(): Dot {
-            return center(body.shape.boundsInParent)
+        this.sensors.forEach {
+            put(it)
         }
-
-        /**
-         * Takes speed and angle now and calculates transformations for each body part
-         */
-        fun currentUpdate(): Set<KeyValue> {
-            val out: MutableSet<KeyValue> = mutableSetOf()
-            // rotate body
-            out.add(KeyValue(body.shape.rotateProperty(), rotateAngle()))
-            // move body
-            out.add(KeyValue(body.shape.layoutXProperty(), center().x + speed.x))
-            out.add(KeyValue(body.shape.layoutYProperty(), center().y + speed.y))
-            // move parts of the body
-            val pointRotation: DoubleVector = speed + (-oldSpeed)
-            val put = { bp: BodyPart ->
-                val shiftX = sum(this.center().x, bp.centerOffset.x, pointRotation.x, speed.x)
-                val shiftY = sum(this.center().y, bp.centerOffset.y, pointRotation.y, speed.y)
-                //out.add(KeyValue(bp.shape.centerXProperty(), shiftX))
-                out.add(KeyValue(bp.shape.layoutYProperty(), shiftY))
-            }
-            sensors.forEach {
-                put(it)
-            }
-            motors.forEach {
-                put(it)
-            }
-            return out
+        this.motors.forEach {
+            put(it)
         }
-
+        // move body
+        out.add(KeyValue(body.shape.translateXProperty(), this.speed.x))
+        out.add(KeyValue(body.shape.translateYProperty(), this.speed.y))
+        return out
     }
 
     companion object Factory {
@@ -102,8 +114,8 @@ class Vehicle(
          * Rectangular, round sensors, round motors, straight sensors-motors of different polarities.
          */
         fun simpleVehicle(
-            leftTopAngleX: Double,
-            leftTopAngleY: Double,
+            leftTopX: Double,
+            leftTopY: Double,
             shortSide: Double,
             longSide: Double,
             sensorMotorRadius: Double,
@@ -116,28 +128,28 @@ class Vehicle(
             }
             val body =
                 Body(
-                    Rectangle(leftTopAngleX, leftTopAngleY, longSide, shortSide),
-                    DoubleVector(0.0, 0.0)
+                    Rectangle(leftTopX, leftTopY, longSide, shortSide),
+                    DoubleVector(longSide / 2, shortSide / 2)
                 )
             body.shape.fill = Color.MOCCASIN
             // Rectangle is default positioned with long side horisontally
-            val bodyCenter = Dot(leftTopAngleX + longSide / 2, leftTopAngleX - shortSide / 2)
+            val bodyCenter = Dot(leftTopX + longSide / 2, leftTopY + shortSide / 2)
             val sensorRight = Sensor(
-                centerOffset = DoubleVector(longSide / 2, -sensorsDistance / 2),
+                centerOffset = DoubleVector(-longSide / 2, -sensorsDistance / 2),
                 bodyCenter = bodyCenter,
                 polarity = 1
             )
             val sensorLeft = Sensor(
-                centerOffset = DoubleVector(longSide / 2, sensorsDistance / 2),
+                centerOffset = DoubleVector(-longSide / 2, sensorsDistance / 2),
                 bodyCenter = bodyCenter,
                 polarity = -1
             )
             val motorRight = Motor(
-                centerOffset = DoubleVector(-longSide / 2, -sensorsDistance / 2),
+                centerOffset = DoubleVector(longSide / 2, -sensorsDistance / 2),
                 bodyCenter = bodyCenter
             )
             val motorLeft = Motor(
-                centerOffset = DoubleVector(-longSide / 2, sensorsDistance / 2),
+                centerOffset = DoubleVector(longSide / 2, sensorsDistance / 2),
                 bodyCenter = bodyCenter
             )
 
@@ -147,8 +159,6 @@ class Vehicle(
                 arrayOf(sensorLeft, sensorRight),
                 DoubleVector(speedX, speedY)
             )
-
-
         }
     }
 }

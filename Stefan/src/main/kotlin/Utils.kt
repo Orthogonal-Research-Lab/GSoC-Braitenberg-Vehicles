@@ -1,4 +1,7 @@
 import javafx.geometry.Bounds
+import tornadofx.*
+import java.nio.ByteBuffer
+import kotlin.math.*
 
 /**
  * This class is more for trying around, than bringing real value.
@@ -18,38 +21,102 @@ inline fun check(value: Boolean, lazyMessage: () -> Any): Unit {
     }
 }
 
-fun angleToXAxis(firstLineTwoDots: Array<Dot>): Double {
-    check(firstLineTwoDots.size >= 2) { throw IllegalArgumentException("Not enough coordinates!") }
-    val (l1d1, l1d2) = firstLineTwoDots
-    val alpha = (l1d2.y - l1d1.y) / (l1d2.x - l1d1.x) //radian = slope
-    return alpha
+// TODO FIX wrong angle calculation!
+fun angleToXAxis(l1d1: Dot, l1d2: Dot = Dot(0.0, 0.0)): Double {
+    val alpha = atan2((l1d2.y - l1d1.y), (l1d2.x - l1d1.x)) //radian = slope
+    return (if (alpha > 0.0) alpha else alpha + 2 * PI)
 }
 
 data class Dot(val x: Double, val y: Double)
 
-data class DoubleVector(var x: Double, var y: Double) {
-    operator fun plus(v: DoubleVector): DoubleVector {
-        this.x += v.x
-        this.y += v.y
-        return this
+class DoubleVector(vararg elements: Double) {
+
+    val length
+        get() = sqrt(elements.map { it * it }.sum())
+
+    var elements: DoubleArray = doubleArrayOf(*elements)
+    var x = elements[0]
+        get() = elements[0]
+        set(value) {
+            elements[0] = value
+            field = value
+        }
+
+    var y = elements[1]
+        get() = elements[1]
+        set(value) {
+            elements[1] = value
+            field = value
+        }
+
+    fun rotate(theta: Dimension<Dimension.AngularUnits>) {
+        check(elements.size == 2) { throw IllegalArgumentException("Can rotate only 2d arrays!") }
+        val (x, y) = elements
+        // angle transformation multiplication
+        val rotAngle: Double = if (theta.units == Dimension.AngularUnits.deg) theta.value * PI / 180 else theta.value
+        val xTick = x * cos(rotAngle) - y * sin(rotAngle)
+        val yTick = y * cos(rotAngle) + x * sin(rotAngle)
+        this.elements = DoubleArray(2) { arrayOf(xTick, yTick)[it] }
     }
 
-    operator fun plus(d: DoubleArray) = run {
-        this.x += d[0]
-        this.y += d[1]
-        this
+    operator fun plus(vector: DoubleVector): DoubleVector {
+        check(this.elements.size == vector.elements.size) { throw Exception("Can't add vectors of different lengths!") }
+        var out = DoubleArray(this.elements.size)
+        for (i in 0 until max(elements.size, vector.elements.size)) {
+            when {
+                i > vector.elements.size ->
+                    out[i] = this.elements[i]
+                i > this.elements.size ->
+                    out[i] = vector.elements[i]
+                else -> out[i] = vector.elements[i] + this.elements[i]
+            }
+        }
+        return DoubleVector(*out)
     }
+
 
     operator fun unaryMinus() = run {
-        this.x = -x
-        this.y = -y
-        this
+        var out = DoubleArray(this.elements.size)
+        for (i in 0 until elements.size) {
+            out[i] = -this.elements[i]
+        }
+        DoubleVector(*out)
     }
 
-    operator fun times(v: DoubleVector) = DoubleVector(x * v.x, y * v.y)
+    operator fun times(vector: DoubleVector): DoubleVector {
+        check(this.elements.size == vector.elements.size) { throw Exception("Can't add vectors of different lengths!") }
+        var out = DoubleArray(this.elements.size)
+        for (i in 0 until elements.size) {
+            out[i] = this.elements[i] * vector.elements[i]
+        }
+        return DoubleVector(*out)
+    }
 
-    operator fun times(c: Double) = DoubleVector(c * x, c * y)
-    operator fun times(c: Int) = DoubleVector(c * x, c * y)
+    operator fun times(c: Double): DoubleVector {
+        var out = DoubleArray(this.elements.size)
+        for (i in 0 until elements.size) {
+            out[i] = this.elements[i] * c
+        }
+        return DoubleVector(*out)
+    }
+
+    fun copy(): DoubleVector {
+        return DoubleVector(*this.elements.copyOf())
+    }
+
+    override fun toString(): String {
+        val sb: StringBuilder = StringBuilder()
+        sb.append("( ")
+        elements.forEach { sb.append("${it} ") }
+        sb.append(")")
+        return String(sb)
+    }
+}
+
+fun Collection<DoubleVector>.sum(): DoubleVector {
+    var out = DoubleVector(0.0, 0.0)
+    this.forEach { out += it }
+    return out
 }
 
 fun center(bounds: Bounds): Dot {
@@ -67,3 +134,69 @@ fun prod(vararg elements: Double): Double {
     elements.forEach { out *= it }
     return out
 }
+
+
+/**
+ * Radian to degrees conversion
+ */
+fun Double.degrees(): Double {
+    return this * 180 / PI
+}
+
+fun Array<DoubleVector>.sum(): DoubleVector {
+    var out = this[0]
+    for (i in 1 until this.size) out += this[i]
+    return out
+}
+
+/**
+ * Matrix class.
+ */
+class Matrix<T>(val xSize: Int, val ySize: Int, val array: Array<Array<T>>) {
+
+    companion object {
+
+        inline operator fun <reified T> invoke() = Matrix(0, 0, Array(0, { emptyArray<T>() }))
+
+        inline operator fun <reified T> invoke(xWidth: Int, yWidth: Int) =
+            Matrix(xWidth, yWidth, Array(xWidth, { arrayOfNulls<T>(yWidth) }))
+
+        inline operator fun <reified T> invoke(xWidth: Int, yWidth: Int, operator: (Int, Int) -> (T)): Matrix<T> {
+            val array = Array(xWidth) {
+                val x = it
+                Array(yWidth) { el -> operator(x, el) }
+            }
+            return Matrix(xWidth, yWidth, array)
+        }
+    }
+
+    operator fun get(x: Int, y: Int): T {
+        return array[x][y]
+    }
+
+    operator fun set(x: Int, y: Int, t: T) {
+        array[x][y] = t
+    }
+
+    inline fun forEach(operation: (T) -> Unit) {
+        array.forEach { it.forEach { operation.invoke(it) } }
+    }
+
+    inline fun forEachIndexed(operation: (x: Int, y: Int, T) -> Unit) {
+        array.forEachIndexed { x, p -> p.forEachIndexed { y, t -> operation.invoke(x, y, t) } }
+    }
+
+    fun isUpperHalfFree(): Boolean {
+        for (i in 0..ySize) {
+            for (j in i..xSize)
+                if (this[i, j] != 0) return false
+        }
+        return true
+    }
+}
+
+fun Double.bytes(): ByteArray =
+    ByteBuffer.allocate(java.lang.Long.BYTES)
+        .putLong(java.lang.Double.doubleToLongBits(this)).array()
+
+
