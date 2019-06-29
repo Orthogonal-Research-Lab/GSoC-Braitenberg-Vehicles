@@ -14,4 +14,11 @@ class VisualizationTest {
         vec.rotate(60.deg)
         assertTrue { abs(vec.length - originalLength) < 0.1 }
     }
+
+    @test
+    fun `vector rotates`() {
+        val vec = DoubleVector(2.0, 0.0)
+        vec.rotate(90.deg)
+        assertTrue(vec.x - 0.0 < 0.001)
+    }
 }

@@ -25,6 +25,9 @@ class SimView : View() {
                         presenter.paused = !presenter.paused
                         if (!presenter.paused) fire(RenderReadyEvent())
                     }
+                    in arrayOf(KeyCode.RIGHT, KeyCode.KP_RIGHT) -> {
+                        presenter.nextEpoch()
+                    }
                     else -> Unit
                 }
             }
@@ -55,7 +58,7 @@ class SimView : View() {
      * Adds vehicles shapes to the simulation.
      */
     fun renderVehicles(
-        vehicles: Set<Vehicle>
+        vehicles: Collection<Vehicle>
     ) { //TODO
         vehicles.forEach {
             with(canvas) {

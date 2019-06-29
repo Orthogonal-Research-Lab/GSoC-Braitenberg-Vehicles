@@ -1,4 +1,7 @@
-import agent.Network
+import agent.brain.BinaryRepresentation
+import agent.brain.Network
+import java.util.*
+import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test as test
 
 
@@ -19,5 +22,16 @@ class NetworkTest {
 
     @test
     fun `run code`() { //DEBUG
+        println(Arrays.toString(0.0.bytes()))
+    }
+
+    @test
+    fun `binary representation chunks convert to double`() {
+        val br = BinaryRepresentation.of(0.754)
+        val initialBytes = br.toByteArray()
+        val slice = br.get(0, 64).toByteArray()
+        for (i in 0 until initialBytes.size) {
+            assertEquals(initialBytes[i], slice[i])
+        }
     }
 }

@@ -16,7 +16,7 @@ class WelcomeScreen : View("Braitenberg vehicles simulation") {
                     filterInput { it.controlNewText.isInt() }
                 }
             }
-            fieldset("World size") {
+            fieldset("World length") {
                 field("World length") {
                     textfield(simconf.worldlength) {
 
