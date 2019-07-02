@@ -2,12 +2,12 @@ package agent
 
 import Dot
 import DoubleVector
+import agent.brain.Network
 import angleToXAxis
 import check
 import degrees
 import javafx.animation.KeyValue
 import javafx.scene.paint.Color
-import javafx.scene.shape.Circle
 import javafx.scene.shape.Rectangle
 import model.SimModel
 import model.WorldObject
@@ -15,15 +15,18 @@ import sum
 import tornadofx.*
 import kotlin.math.abs
 import kotlin.math.log10
+import kotlin.random.Random
 
 class Vehicle(
     val body: Body,
     val motors: Array<Motor>,
     val sensors: Array<Sensor>,
-    var speed: DoubleVector
+    var speed: DoubleVector,
+    var brain: Network
 ) {
     val bodyParts: MutableSet<BodyPart>
     var oldSpeed: DoubleVector = DoubleVector(0.0, 0.0) //used for rotation computation
+
 
     init {
         bodyParts = mutableSetOf(body)
@@ -42,10 +45,14 @@ class Vehicle(
     fun updateSpeed(affectors: Collection<WorldObject>) {
         // save for angle computation
         this.oldSpeed = this.speed.copy()
-        sensors.forEach {
-            this.speed += it.percept(affectors)
-        }
+        this.speed += this.environmentSpeedDelta(affectors)
         repulseFromWalls()
+    }
+
+    private fun environmentSpeedDelta(affectors: Collection<WorldObject>): DoubleVector {
+        val sensorInput = this.sensors.map { it.percept(affectors) }
+        val motorOutput = this.brain.propagate(sensorInput.toTypedArray())
+        return motorOutput.sum()
     }
 
     /**
@@ -82,30 +89,47 @@ class Vehicle(
      */
     fun calcCurrentUpdate(affectors: MutableSet<WorldObject>): Set<KeyValue> {
         this.updateSpeed(affectors)
+        val animation = animationChanges()
+        return animation
+    }
+
+    fun animationChanges(): Set<KeyValue> {
         val out: MutableSet<KeyValue> = mutableSetOf()
-        // rotate body
-        val rotateAngle = this.rotationAngle()
-        out.add(KeyValue(body.shape.rotateProperty(), body.shape.rotate + rotateAngle.degrees()))
-        // move parts of the body
-        this.body.centerOffset.rotate(rotateAngle.rad)
-        val put = { bp: BodyPart ->
-            val shape: Circle = bp.shape as Circle //TODO generalize cast
-            val oldBPOffset = bp.rotateAroundCenter(rotateAngle.rad)
-            // center offset is already angle updated
-            val shiftX = sum(this.speed.x, -oldBPOffset.x, bp.centerOffset.x) //+radius
-            val shiftY = sum(this.speed.y, -oldBPOffset.y, bp.centerOffset.y)
-            out.add(KeyValue(shape.translateXProperty(), shiftX))
-            out.add(KeyValue(shape.translateYProperty(), shiftY))
-        }
-        this.sensors.forEach {
-            put(it)
-        }
-        this.motors.forEach {
-            put(it)
-        }
-        // move body
+        out.add(this.bodyRotation())
+        out.addAll(this.moveBodyParts())
+        out.addAll(this.moveBody())
+        return out
+    }
+
+    private fun moveBody(): Collection<KeyValue> {
+        val out: MutableSet<KeyValue> = mutableSetOf()
         out.add(KeyValue(body.shape.translateXProperty(), this.speed.x))
         out.add(KeyValue(body.shape.translateYProperty(), this.speed.y))
+        return out
+    }
+
+    fun bodyRotation(): KeyValue {
+        val rotateAngle = this.rotationAngle()
+        return KeyValue(body.shape.rotateProperty(), body.shape.rotate + rotateAngle.degrees())
+    }
+
+    fun moveBodyParts(): Set<KeyValue> {
+        val out: MutableSet<KeyValue> = mutableSetOf()
+        val transform = { bp: BodyPart ->
+            val oldBPOffset = bp.centerOffset.copy()
+            bp.rotateAroundCenter(this.rotationAngle().rad)
+            // bp center offset is already angle updated
+            val shiftX = sum(this.speed.x, -oldBPOffset.x, bp.centerOffset.x) //+radius
+            val shiftY = sum(this.speed.y, -oldBPOffset.y, bp.centerOffset.y)
+            out.add(KeyValue(bp.shape.translateXProperty(), shiftX))
+            out.add(KeyValue(bp.shape.translateYProperty(), shiftY))
+        }
+        this.sensors.forEach {
+            transform(it)
+        }
+        this.motors.forEach {
+            transform(it)
+        }
         return out
     }
 
@@ -121,7 +145,9 @@ class Vehicle(
             sensorMotorRadius: Double,
             sensorsDistance: Double,
             speedX: Double,
-            speedY: Double
+            speedY: Double,
+            brain: Network? = null,
+            brainSize: Int = 5
         ): Vehicle {
             check(sensorsDistance <= shortSide) {
                 throw IllegalArgumentException("Sensors distance should be shorter than side!")
@@ -152,13 +178,35 @@ class Vehicle(
                 centerOffset = DoubleVector(longSide / 2, sensorsDistance / 2),
                 bodyCenter = bodyCenter
             )
+            var br = brain
+            if (br == null)
+                br = Network.generateRandomOfSize(brainSize)
 
             return Vehicle(
                 body,
                 arrayOf(motorLeft, motorRight),
                 arrayOf(sensorLeft, sensorRight),
-                DoubleVector(speedX, speedY)
+                DoubleVector(speedX, speedY),
+                br
             )
+        }
+
+        fun randomSimpleVehicle(
+            worldWidth: Double, worldHeight: Double,
+            vehicleLength: Double = Math.floor(worldWidth / 80),
+            vehicleHeight: Double = Math.floor(worldHeight / 150),
+            sensorsDistance: Double = vehicleHeight / 2.0,
+            brain: Network? = null
+        ): Vehicle {
+            return Vehicle.Factory.simpleVehicle(
+                Random.nextDouble(0.0, worldWidth),
+                Random.nextDouble(0.0, worldHeight),
+                vehicleHeight, vehicleLength, 1.0, sensorsDistance,
+                Random.nextDouble(-10.0, 10.0),
+                Random.nextDouble(-10.0, 10.0),
+                brain = brain
+            )
+
         }
     }
 }
