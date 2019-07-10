@@ -7,14 +7,15 @@ import angleToXAxis
 import check
 import degrees
 import javafx.animation.KeyValue
+import javafx.scene.Node
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import model.SimModel
 import model.WorldObject
 import sum
 import tornadofx.*
+import view.VehicleGroup
 import kotlin.math.abs
-import kotlin.math.log10
 import kotlin.random.Random
 
 class Vehicle(
@@ -24,15 +25,9 @@ class Vehicle(
     var speed: DoubleVector,
     var brain: Network
 ) {
-    val bodyParts: MutableSet<BodyPart>
+    val render = VehicleGroup(sensors.map { it.shape } + motors.map { it.shape } + listOf<Node>(body.shape))
+    val model: SimModel by SimModel
     var oldSpeed: DoubleVector = DoubleVector(0.0, 0.0) //used for rotation computation
-
-
-    init {
-        bodyParts = mutableSetOf(body)
-        bodyParts.addAll(motors)
-        bodyParts.addAll(sensors)
-    }
 
     fun getAngle() = angleToXAxis(Dot(this.speed.x, this.speed.y))
     fun getX() = this.body.shape.layoutX
@@ -45,42 +40,63 @@ class Vehicle(
     fun updateSpeed(affectors: Collection<WorldObject>) {
         // save for angle computation
         this.oldSpeed = this.speed.copy()
-        this.speed += this.environmentSpeedDelta(affectors)
-        repulseFromWalls()
+        this.speed = this.perceptEffects(affectors)
     }
 
-    private fun environmentSpeedDelta(affectors: Collection<WorldObject>): DoubleVector {
+    private fun perceptEffects(affectors: Collection<WorldObject>): DoubleVector {
         val sensorInput = this.sensors.map { it.percept(affectors) }
         val motorOutput = this.brain.propagate(sensorInput.toTypedArray())
-        return motorOutput.sum()
+        val pureSpeed = motorOutput.sum()
+        val adjustedSpeed = repulseFromWalls(pureSpeed)
+        return adjustedSpeed
     }
 
     /**
      * Repulses vehicle off the wall, when it is close
      */
-    private fun repulseFromWalls() {
-        val aspiredX = this.getX() + this.speed.x
-        val aspiredY = this.getY() + this.speed.y
-
-        val (fromLeft, fromUp) = arrayOf(this.getX(), this.getY())
-        if (fromLeft == 0.0) return //just initialized
-        val (fromRight, fromDown) = arrayOf(abs(SimModel.worldEnd.x - fromLeft), abs(SimModel.worldEnd.y - fromUp))
+    private fun repulseFromWalls(speed: DoubleVector): DoubleVector {
+        val (fromLeft, fromUp) = arrayOf(abs(this.getX()), abs(this.getY()))
+        if (fromLeft == 0.0 || fromUp == 0.0) return speed//just initialized
+        val (fromRight, fromDown) = arrayOf(abs(model.worldEnd.x - fromLeft), abs(model.worldEnd.y - fromUp))
         // truncate speed vectors to out of bounds
-        if (aspiredX > SimModel.worldEnd.x) this.speed.x = (SimModel.worldEnd.x - this.getX()) * 0.9
-        if (aspiredY > SimModel.worldEnd.y) this.speed.y = (SimModel.worldEnd.y - this.getY()) * 0.9
-        // TODO half-Morse potential?
-        this.speed.x += abs(log10(fromLeft)) - abs(log10(fromRight)) // add in the positive x, substract in negative (fromRight
-        this.speed.y += abs(log10(fromUp)) - abs(log10(fromDown))
+        val out = adjustSpeedInLimits(speed, arrayOf(fromLeft, fromUp, fromRight, fromDown))
+        val c = 100.0
+        val adjustedSpeed = DoubleVector(
+            out.x + repulseFun(fromLeft, c) - repulseFun(fromRight, c),
+            out.y + repulseFun(fromUp, c) - repulseFun(fromDown, c)
+        )
+        return adjustedSpeed
     }
+
+    private fun adjustSpeedInLimits(speed: DoubleVector, distances: Array<Double>): DoubleVector {
+        val out = speed
+        val (fromLeft, fromUp, fromRight, fromDown) = distances
+        if (fromLeft + speed.x > model.worldEnd.x) out.x = (model.worldEnd.x - fromLeft) * 0.9
+        else if (fromRight + speed.x < 0) out.x = (fromRight - 0) * 0.9
+        if (fromUp + speed.y > model.worldEnd.y) out.y = (model.worldEnd.y - fromUp) * 0.9
+        else if (fromDown + speed.y < 0) out.x = (fromDown - 0) * 0.9
+        return out
+    }
+
+    /**
+     * c is "repulse closer than points" parameter
+     */
+    fun repulseFun(distance: Double, c: Double): Double {
+        if (abs(distance) > c) return 0.0
+        else return abs(1 / abs(distance / c))
+    }
+
 
     /**
      * Next rotation angle, given in radians.
      */
     fun rotationAngle(): Double {
         // Delta of the angles of old and current speed vector
-        return this.getAngle() - angleToXAxis(
+        val angleNow = this.getAngle()
+        val anglePrev = angleToXAxis(
             Dot(this.oldSpeed.x, this.oldSpeed.y)
         )
+        return angleNow - anglePrev
     }
 
 
@@ -103,8 +119,8 @@ class Vehicle(
 
     private fun moveBody(): Collection<KeyValue> {
         val out: MutableSet<KeyValue> = mutableSetOf()
-        out.add(KeyValue(body.shape.translateXProperty(), this.speed.x))
-        out.add(KeyValue(body.shape.translateYProperty(), this.speed.y))
+        out.add(KeyValue(body.shape.layoutXProperty(), this.getX() + this.speed.x))
+        out.add(KeyValue(body.shape.layoutYProperty(), this.getY() + this.speed.y))
         return out
     }
 
@@ -117,12 +133,13 @@ class Vehicle(
         val out: MutableSet<KeyValue> = mutableSetOf()
         val transform = { bp: BodyPart ->
             val oldBPOffset = bp.centerOffset.copy()
-            bp.rotateAroundCenter(this.rotationAngle().rad)
+            val rotAngle = this.rotationAngle()
+            bp.rotateAroundCenter(rotAngle.rad)
             // bp center offset is already angle updated
-            val shiftX = sum(this.speed.x, -oldBPOffset.x, bp.centerOffset.x) //+radius
-            val shiftY = sum(this.speed.y, -oldBPOffset.y, bp.centerOffset.y)
-            out.add(KeyValue(bp.shape.translateXProperty(), shiftX))
-            out.add(KeyValue(bp.shape.translateYProperty(), shiftY))
+            val newX = bp.getX() - oldBPOffset.x + bp.centerOffset.x + this.speed.x
+            val newY = bp.getY() - oldBPOffset.y + bp.centerOffset.y + this.speed.y
+            out.add(KeyValue(bp.getXProperty(), newX))
+            out.add(KeyValue(bp.getYProperty(), newY))
         }
         this.sensors.forEach {
             transform(it)
@@ -146,8 +163,8 @@ class Vehicle(
             sensorsDistance: Double,
             speedX: Double,
             speedY: Double,
-            brain: Network? = null,
-            brainSize: Int = 5
+            brainSize: Int = 5,
+            brain: Network? = null
         ): Vehicle {
             check(sensorsDistance <= shortSide) {
                 throw IllegalArgumentException("Sensors distance should be shorter than side!")
@@ -168,7 +185,7 @@ class Vehicle(
             val sensorLeft = Sensor(
                 centerOffset = DoubleVector(-longSide / 2, sensorsDistance / 2),
                 bodyCenter = bodyCenter,
-                polarity = -1
+                polarity = 1
             )
             val motorRight = Motor(
                 centerOffset = DoubleVector(longSide / 2, -sensorsDistance / 2),
@@ -193,9 +210,10 @@ class Vehicle(
 
         fun randomSimpleVehicle(
             worldWidth: Double, worldHeight: Double,
-            vehicleLength: Double = Math.floor(worldWidth / 80),
-            vehicleHeight: Double = Math.floor(worldHeight / 150),
-            sensorsDistance: Double = vehicleHeight / 2.0,
+            vehicleLength: Double,
+            vehicleHeight: Double,
+            sensorsDistance: Double,
+            brainSize: Int = 5,
             brain: Network? = null
         ): Vehicle {
             return Vehicle.Factory.simpleVehicle(
@@ -204,7 +222,8 @@ class Vehicle(
                 vehicleHeight, vehicleLength, 1.0, sensorsDistance,
                 Random.nextDouble(-10.0, 10.0),
                 Random.nextDouble(-10.0, 10.0),
-                brain = brain
+                brainSize,
+                brain
             )
 
         }

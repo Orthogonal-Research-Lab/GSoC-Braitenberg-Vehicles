@@ -1,8 +1,8 @@
 import javafx.application.Application
 import tornadofx.*
-import view.SimView
+import view.WelcomeScreen
 
-class SimApp : App(SimView::class, Styles::class)
+class SimApp : App(WelcomeScreen::class, Styles::class)
 
 fun main(args: Array<String>) {
     Application.launch(SimApp::class.java, *args)
@@ -11,8 +11,8 @@ fun main(args: Array<String>) {
 class Styles : Stylesheet() {
     init {
         root {
-            minWidth = 400.px
-            minHeight = 200.px
+            minWidth = 600.px
+            minHeight = 600.px
         }
     }
 }

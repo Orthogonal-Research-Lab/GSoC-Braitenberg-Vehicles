@@ -23,7 +23,6 @@ inline fun check(value: Boolean, lazyMessage: () -> Any): Unit {
     }
 }
 
-// TODO FIX wrong angle calculation!
 fun angleToXAxis(l1d1: Dot, l1d2: Dot = Dot(0.0, 0.0)): Double {
     val alpha = atan2((l1d2.y - l1d1.y), (l1d2.x - l1d1.x)) //radian = slope
     return (if (alpha > 0.0) alpha else alpha + 2 * PI)
@@ -74,6 +73,11 @@ class DoubleVector(vararg elements: Double) {
             }
         }
         return DoubleVector(*out)
+    }
+
+
+    fun vecLength(): Double {
+        return sqrt(elements.map { it * it }.sum())
     }
 
 
@@ -221,3 +225,35 @@ fun generateNormalizedSequence(
     return out
 }
 
+@ExperimentalUnsignedTypes
+fun UByteArray.mapInPlace(transform: (UByte) -> UByte) {
+    for (i in this.indices) {
+        this[i] = transform(this[i])
+    }
+}
+
+fun Double.round(decimals: Int): Double {
+    var multiplier = 1.0
+    repeat(decimals) { multiplier *= 10 }
+    return round(this * multiplier) / multiplier
+}
+
+fun UByte.flip(bitIdx: Int): UByte {
+    check(bitIdx in 0..7) { throw Exception("UByte has only 8 bits!") }
+    var op = 1.toUByte()
+    op = op.toInt().shl(7 - bitIdx).toUByte()
+    return this.xor(op)
+}
+
+
+fun Int.pow(i: Int): Int {
+    var out = 1
+    for (j in 1..i) out *= j
+    return out
+}
+
+fun <T> Array<T>.random(): T = this[Random.nextInt(this.size)]
+
+fun mean(vararg elements: Double): Double {
+    return (elements.sum() / elements.size)
+}
