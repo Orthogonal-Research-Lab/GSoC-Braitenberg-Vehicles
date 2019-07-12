@@ -2,12 +2,13 @@ package agent.brain
 
 import DoubleVector
 import Matrix
-import bytes
-import generateNormalizedSequence
+import org.nield.kotlinstatistics.WeightedCoin
+import round
 import sum
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
+import kotlin.math.round
+import kotlin.random.Random
 
+@ExperimentalUnsignedTypes
 open class Network(
     val innerNeurons: Set<Neuron>,
     val inputNeurons: Array<Neuron>,
@@ -65,21 +66,22 @@ open class Network(
             Factory.SURF_NEURONS_COUNT
         )
 
-        var representation = byteArrayOf()
+        var representation = ubyteArrayOf()
         for (j in 0 until nodeCount) {
             for (i in 0 until j) {
                 if (connections.any { it.from == na[i] && it.to == na[j] }) {
-                    val elBytes =
-                        connections.filter { it.from == na[i] && it.to == na[j] }[0].weight.bytes()
-                    representation += elBytes
+                    val elAsByte =
+                        round(connections.filter { it.from == na[i] && it.to == na[j] }[0].weight * 255).toInt()
+                            .toUByte()
+                    representation += elAsByte
                 } else {
-                    representation += 0.0.bytes()
+                    representation += 0.toUByte()
                 }
             }
         }
         //type conversions
         null
-        return BinaryRepresentation.valueOf(representation)
+        return BinaryRepresentation(representation)
     }
 
     companion object Factory {
@@ -106,17 +108,14 @@ open class Network(
          * Build network from the sequence of bits. In this version, weights are represented by 32bit
          */
         fun fromBinary(representation: BinaryRepresentation): Network {
-            println("Representation length: ${representation.length()}")
             val nodeCount = representation.nodesSize()
             val adjMatrix = Matrix<Double>(nodeCount, nodeCount)
 
             for (j in 1 until nodeCount) {
                 for (i in 0 until j) {
                     val chunkPos = (j - 1) * j / 2 + i
-                    val el =
-                        ByteBuffer.wrap(representation[chunkPos * BinaryRepresentation.chunkSize, (chunkPos + 1) * BinaryRepresentation.chunkSize].toByteArray())
-                            .order(ByteOrder.LITTLE_ENDIAN).double
-                    adjMatrix[i, j] = el
+                    val el = representation[chunkPos]
+                    adjMatrix[i, j] = (el.toInt() / 255.0).round(2)
                 }
             }
             return fromAdjMatrix(adjMatrix)
@@ -153,18 +152,17 @@ open class Network(
 
         /**
          * Generate circuit-free network with random normalized weights of a given length.
+         * noConnectionBias gives, with which probability an edge would have zero weight.
          */
-        fun generateRandomOfSize(brainSize: Int): Network {
+        fun generateRandomOfSize(brainSize: Int, noConnectionBias: Double = 0.3): Network {
             val adjMatrix = Matrix<Double>(brainSize, brainSize)
+            val noWeightCoin = WeightedCoin(noConnectionBias)
             for (i in 0 until brainSize) { // walk "from" columns
-                val thisNodeWeights = generateNormalizedSequence(size = brainSize - i)
-                val it = thisNodeWeights.iterator()
                 for (j in i + 1 until brainSize) {
-                    val el = it.next()
+                    val el = if (noWeightCoin.flip()) 0.0 else Random.nextDouble(1.0)
                     adjMatrix[i, j] = el
                 }
             }
-            println("Generated network: $adjMatrix")
             return fromAdjMatrix(adjMatrix)
         }
 

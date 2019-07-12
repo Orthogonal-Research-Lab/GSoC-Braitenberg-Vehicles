@@ -3,8 +3,9 @@ package model
 import Dot
 import DoubleVector
 import angleToXAxis
+import javafx.scene.Group
 import javafx.scene.shape.Circle
-import javafx.scene.shape.Shape
+import view.WorldObjectGroup
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
@@ -15,7 +16,7 @@ import kotlin.random.Random
  */
 class WorldObject(
     val x: Double, val y: Double, val size: Double, val effectStrength: Double,
-    val shape: Shape = Circle(x, y, size)
+    val shape: Group = WorldObjectGroup(Circle(x, y, size))
 ) {
 
     /**
@@ -23,7 +24,9 @@ class WorldObject(
      */
     fun effectOnDistance(toX: Double, toY: Double): DoubleVector {
         val G = 10
-        val rSquare = (toX - this.x).pow(2) + (toY - this.y).pow(2)
+        var rSquare = (toX - this.x).pow(2) + (toY - this.y).pow(2)
+        if (rSquare == 0.0)
+            rSquare = 0.0001
         val F = G * this.effectStrength * 100 / (rSquare)
         val alpha = angleToXAxis(
             Dot(x, y), Dot(toX, toY)
@@ -40,8 +43,8 @@ class WorldObject(
             size: Double
         ): WorldObject {
             return WorldObject(
-                Random.nextDouble(worldWidth),
-                Random.nextDouble(worldHeight),
+                Random.nextDouble(worldWidth - size),
+                Random.nextDouble(worldHeight - size),
                 size,
                 Random.nextDouble(effectMin, effectMax)
             )

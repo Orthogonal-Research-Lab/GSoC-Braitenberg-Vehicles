@@ -1,36 +1,42 @@
 package model
 
-import Dot
+import DoubleVector
 import agent.Vehicle
 import agent.brain.Network
 import org.nield.kotlinstatistics.WeightedCoin
-import java.lang.Math.floor
+import presenter.SimPresenter
 import kotlin.random.Random
+import kotlin.reflect.KProperty
 
 /**
- * Contains buisness logic of the world. Genetic algorithm is one-point crossover, elitarism and luck survival.
+ * Contains buisness logic of the world. Genetic algorithm part of the model is one-point crossover, elitarism and luck survival.
  */
 class SimModel(
     val worldWidth: Double,
     val worldHeight: Double,
     val objects: MutableSet<WorldObject>,
-    internal var vehicles: MutableList<Vehicle>,
-    mutationRate: Double = 0.05,
-    matingRate: Double = 0.8, /* how probable is it, that unique vehicle pair mates? */
-    val rateEliteSelected: Double = 0.8,
-    rateLuckySelected: Double = 0.05
+    var vehicles: MutableList<Vehicle>,
+    mutationRate: Double,
+    matingRate: Double, /* how probable is it, that unique vehicle pair mates? */
+    val rateEliteSelected: Double,
+    rateLuckySelected: Double,
+    val presenter: SimPresenter
 ) {
-
+    val worldEnd = DoubleVector(worldWidth, worldHeight)
     val mutationCoin = WeightedCoin(mutationRate)
     val matingCoin = WeightedCoin(matingRate)
     val selectLuckyCoin = WeightedCoin(rateLuckySelected)
     var epochCount = 0
 
-    fun nextEpoch() {
+    /**
+     * Returns vehicles active after an epoch update.
+     */
+    fun nextEpoch(): Collection<Vehicle> {
         this.mutateBrains()
         this.crossoverBrains()
         this.selectVehicles()
         ++epochCount
+        return this.vehicles
     }
 
     private fun mutateBrains() {
@@ -58,20 +64,21 @@ class SimModel(
     private fun mateBrains(brain1: Network, brain2: Network): Vehicle {
         val b1 = brain1.toBinary()
         val b2 = brain2.toBinary()
-        check(b1.length() == b2.length()) { throw IllegalArgumentException("Only networks of same size are allowed to crossover!") }
         val coPoint = Random.nextInt(b1.length())
-        val possibleOffspring = arrayOf(b1[0, coPoint] + b2[coPoint], b2[0, coPoint] + b1[coPoint])
-        val which = Random.nextInt(possibleOffspring.size)
+        val childBrain = b1.crossover(b2, coPoint)
         return Vehicle.randomSimpleVehicle(
             worldHeight = worldHeight,
             worldWidth = worldWidth,
-            brain = Network.fromBinary(possibleOffspring[which])
+            brain = Network.fromBinary(childBrain),
+            sensorsDistance = presenter.conf.sensorsDistance.value.toDouble(),
+            vehicleHeight = presenter.conf.vehicleWidth.value.toDouble(),
+            vehicleLength = presenter.conf.vehicleLength.value.toDouble()
         )
     }
 
     private fun selectVehicles() {
         val fitnessDecrVehicles =
-            fitness(this.vehicles).toList().sortedBy { (_, v) -> v }.toMap().keys.toList()
+            fitness(this.vehicles).toList().sortedBy { (_, v) -> v }.reversed().toMap().keys.toList()
         var died = mutableSetOf<Vehicle>()
         for (i in 0 until fitnessDecrVehicles.size) {
             if (i > fitnessDecrVehicles.size * rateEliteSelected && !selectLuckyCoin.flip()) died.add(
@@ -84,33 +91,46 @@ class SimModel(
     private fun fitness(individuals: Collection<Vehicle>): HashMap<Vehicle, Double> {
         val out = hashMapOf<Vehicle, Double>()
         individuals.forEach {
-            out.put(it, 0.0) //TODO implement
+            out.put(it, it.speed.vecLength() + it.oldSpeed.vecLength())
         }
         return out
     }
 
 
     companion object Factory {
-        var worldEnd = Dot(0.0, 0.0)
+        var singleton: SimModel? = null
         /**
          * All vehicles default, have same length, default world objects.
          */
-        fun defaultModel(
-            worldWidth: Double = 800.00,
-            worldHeight: Double = 600.0,
-            vehiclesCount: Int = 10,
-            vehicleLength: Double = floor(worldWidth / 80),
-            vehicleHeight: Double = floor(worldHeight / 150),
-            worldObjectCount: Int = 5,
-            sensorsDistance: Double = vehicleHeight / 2.0,
-            effectMin: Double = 10.0,
-            effectMax: Double = 100.0
+        fun instance(
+            worldWidth: Double,
+            worldHeight: Double,
+            startingVehicles: Int,
+            vehicleLength: Double,
+            vehicleHeight: Double,
+            worldObjectCount: Int,
+            sensorsDistance: Double,
+            effectMin: Double,
+            effectMax: Double,
+            brainSize: Int,
+            mutationRate: Double,
+            matingRate: Double, /* how probable is it, that unique vehicle pair mates? */
+            rateEliteSelected: Double,
+            rateLuckySelected: Double,
+            presenter: SimPresenter
         ): SimModel {
-            worldEnd = Dot(worldWidth, worldHeight)
+            if (singleton != null) return singleton!!
             val vehicles: MutableList<Vehicle> = mutableListOf()
-            for (i in 1..vehiclesCount) {
+            for (i in 1..startingVehicles) {
                 vehicles.add(
-                    Vehicle.randomSimpleVehicle(worldWidth, worldHeight, vehicleLength, vehicleHeight, sensorsDistance)
+                    Vehicle.randomSimpleVehicle(
+                        worldWidth,
+                        worldHeight,
+                        vehicleLength,
+                        vehicleHeight,
+                        sensorsDistance,
+                        brainSize
+                    )
                 )
 
             }
@@ -126,12 +146,22 @@ class SimModel(
                     objectSize
                 )
             )
-            return SimModel(
+            singleton = SimModel(
                 worldWidth,
                 worldHeight,
                 startWorldObjects,
-                vehicles
+                vehicles,
+                mutationRate,
+                matingRate,
+                rateEliteSelected = rateEliteSelected,
+                rateLuckySelected = rateLuckySelected,
+                presenter = presenter
             )
+            return singleton!!
+        }
+
+        operator fun getValue(vehicle: Vehicle, property: KProperty<*>): SimModel {
+            return singleton!!
         }
     }
 }
