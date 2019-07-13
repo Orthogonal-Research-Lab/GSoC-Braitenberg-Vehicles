@@ -26,10 +26,12 @@ May 6 - May 27: Community Period
 
 * check out our [reference library](https://nam05.safelinks.protection.outlook.com/?url=https%3A%2F%2Fln.sync.com%2Fdl%2Fada91a4b0%2F2mxtb4ye-p98fttgr-bfbe9jgb-2jnmwsz2&data=02%7C01%7CZIG9%40pitt.edu%7C2833b388372148497bde08d6b4674e89%7C9ef9f489e0a04eeb87cc3a526112fd0d%7C1%7C0%7C636894753147560206&sdata=TQ33JBZkZ264NxKhPCdMhpVqwvhGmjFejh6oUYgOkfg%3D&reserved=0)!
 
-* initial presentations from: [Ziyi Gong](), [Stefan Dvoretskii](), [Jesse Parent]()  
+* initial presentations: [Ziyi Gong](https://www.youtube.com/watch?v=vVgKRk3VkAY), [Stefan Dvoretskii](https://www.youtube.com/watch?v=CGrJcPQi01w&t=36s)  
 
 May 27: Coding Period Begins!  
 
 * feel free to visit our [coding period repo](https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles)  
 
 * check out our annotated list of connectome datasets [link](https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/tree/master/Connectome%20Datasets)
+
+* community evaluation of model: [Ziyi Gong](https://www.youtube.com/watch?v=oB8HC46GFh4), [Stefan Dvoretskii](https://www.youtube.com/watch?v=lPwONsz0P0s&t=1s)
