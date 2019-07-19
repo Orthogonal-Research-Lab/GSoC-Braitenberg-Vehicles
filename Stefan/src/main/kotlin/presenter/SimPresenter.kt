@@ -2,19 +2,23 @@ package presenter
 
 import agent.Vehicle
 import config.SimConfigItem
+import data.SimInfo
+import data.VehicleInfo
 import javafx.animation.Timeline
 import javafx.event.EventHandler
 import model.SimModel
 import model.WorldObject
 import tornadofx.*
-import view.SimView
-import view.WelcomeScreen
+import view.*
 import kotlin.math.ceil
 
 class SimPresenter() : Controller() {
     lateinit var conf: SimConfigItem
-    var view = find(SimView::class)
+    lateinit var view: SimView
     lateinit var model: SimModel
+
+    fun epochCountProperty() = model.epochCountProperty()
+
     val configView: WelcomeScreen by inject()
     var running = true
     var paused = false
@@ -54,6 +58,7 @@ class SimPresenter() : Controller() {
                 mutationRate = conf.mutationRate.value.toDouble(),
                 presenter = this
             )
+        view = find(view.SimView::class)
         configView.replaceWith(SimView::class)
         view.drawWorldBoundaries(conf.worldWidth.value.toDouble(), conf.worldHeight.value.toDouble())
         fire(UpdateRenderEvent()) //tells view to render model
@@ -63,17 +68,16 @@ class SimPresenter() : Controller() {
      * Updates render frame
      */
     fun updateRender() {
-        if (running) {
-            val timeline = thisTickAnimation()
-            timeline.onFinished = EventHandler {
-                if (gaUpdateQueued) {
-                    model.nextEpoch()
-                    gaUpdateQueued = false
-                    fire(UpdateRenderEvent())
-                } else renderReady()
-            }
-            timeline.play()
+        val timeline = thisTickAnimation()
+        timeline.onFinished = EventHandler {
+            if (gaUpdateQueued) {
+                model.nextEpoch()
+                gaUpdateQueued = false
+                fire(UpdateRenderEvent()) //update GUI with new vehicles
+            } else fire(RenderReadyEvent())
         }
+        timeline.play()
+
     }
 
     fun thisTickAnimation(): Timeline {
@@ -119,4 +123,19 @@ class SimPresenter() : Controller() {
         paused = false
         fire(RenderReadyEvent())
     }
+
+    fun openSimInfoFragment() {
+        pause()
+        val infos = SimInfo(this.model.vehicles.size, this.model.vehicles.map {it.speed})
+        val fragment = InfoFragment(infos)
+        fragment.openModal(block = true)
+    }
+
+    fun showVehicleInformation(vehicle: Vehicle) {
+        pause()
+        val infos = VehicleInfo(vehicle)
+        val fragment = InfoFragment(infos)
+        fragment.openModal(block = true)
+    }
+
 }

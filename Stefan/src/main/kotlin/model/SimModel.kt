@@ -5,6 +5,7 @@ import agent.Vehicle
 import agent.brain.Network
 import org.nield.kotlinstatistics.WeightedCoin
 import presenter.SimPresenter
+import tornadofx.*
 import kotlin.random.Random
 import kotlin.reflect.KProperty
 
@@ -26,16 +27,17 @@ class SimModel(
     val mutationCoin = WeightedCoin(mutationRate)
     val matingCoin = WeightedCoin(matingRate)
     val selectLuckyCoin = WeightedCoin(rateLuckySelected)
-    var epochCount = 0
+    var epochCount by property<Int>(0)
+    fun epochCountProperty() = getProperty(SimModel::epochCount)
 
     /**
      * Returns vehicles active after an epoch update.
      */
     fun nextEpoch(): Collection<Vehicle> {
         this.mutateBrains()
-        this.crossoverBrains()
         this.selectVehicles()
-        ++epochCount
+        this.crossoverBrains()
+        epochCount++
         return this.vehicles
     }
 
