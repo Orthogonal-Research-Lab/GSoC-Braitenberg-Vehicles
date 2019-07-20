@@ -1,13 +1,17 @@
 package view
 
+import EpochInfoConverter
+import Styles
 import agent.Vehicle
+import javafx.scene.control.Button
+import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.AnchorPane
 import javafx.scene.shape.Line
 import model.WorldObject
+import path
 import presenter.SimPresenter
-import presenter.UpdateRenderEvent
 import tornadofx.*
 import kotlin.system.exitProcess
 
@@ -16,7 +20,9 @@ class SimView : View() {
     val canvas: AnchorPane
 
     override val root = vbox {
-        anchorpane {}
+        anchorpane {
+            label(presenter.epochCountProperty(), converter = EpochInfoConverter())
+        }
         keyboard {
             addEventFilter(KeyEvent.KEY_PRESSED) { e ->
                 processInput(e.code)
@@ -38,6 +44,37 @@ class SimView : View() {
             //world boundaries
             this += Line(worldWidth, 0.0, worldWidth, worldHeight)
             this += Line(0.0, worldHeight, worldWidth, worldHeight)
+            this += infobutton(worldWidth)
+        }
+    }
+
+    /**
+     * Fetches the infobutton with immage. World width is used to change its square measurement.
+     */
+    fun infobutton(worldWidth: Double): Button {
+        val resF = path(
+            "file:///",
+            "C:",
+            "src",
+            "Braitenberg-Vehicles",
+            "src",
+            "main",
+            "res",
+            "drawable",
+            "info_button.png"
+        )
+        val infoicon = ImageView(resF)
+        infoicon.fitWidth = worldWidth / 20.0
+        infoicon.fitHeight = infoicon.fitWidth
+        return button("", infoicon) {
+            addClass(Styles.infobutton)
+            root.requestFocus()
+            this.layoutX = worldWidth - infoicon.fitWidth
+            this.layoutY = 0.0
+
+            action {
+                presenter.openSimInfoFragment()
+            }
         }
     }
 
@@ -49,8 +86,11 @@ class SimView : View() {
                 exitProcess(0)
             }
             KeyCode.SPACE -> {
-                if (presenter.paused) presenter.renderReady()
-                else presenter.pause()
+                if (presenter.paused) {
+                    presenter.renderReady()
+                } else {
+                    presenter.pause()
+                }
             }
             in arrayOf(KeyCode.RIGHT, KeyCode.KP_RIGHT) -> {
                 runAsync {

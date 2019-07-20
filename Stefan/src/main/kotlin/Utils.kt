@@ -1,9 +1,13 @@
 import javafx.geometry.Bounds
+import javafx.util.StringConverter
 import tornadofx.*
+import view.InfoFragment
+import java.io.File
 import java.nio.ByteBuffer
 import java.util.*
 import kotlin.math.*
 import kotlin.random.Random
+import kotlin.reflect.KClass
 
 /**
  * This class is more for trying around, than bringing real value.
@@ -256,4 +260,32 @@ fun <T> Array<T>.random(): T = this[Random.nextInt(this.size)]
 
 fun mean(vararg elements: Double): Double {
     return (elements.sum() / elements.size)
+}
+
+val pathsep = File.separator
+
+fun path(vararg pathSlices: String): String {
+    val sb = java.lang.StringBuilder()
+    pathSlices.forEach { sb.append(it + pathsep) }
+    val out = sb.toString()
+    return out.substring(0, out.length - 1)
+}
+
+/**
+ * Kotlin style on-demand function to fetch an instance of fragment singleton
+ */
+fun <R, S : InfoFragment<R>> openFragment(fragmentClass: KClass<S>, infos: R) {
+    val fragment = find(fragmentClass)
+    fragment.openModal(block = true)
+}
+
+class EpochInfoConverter : StringConverter<Int>() {
+    override fun toString(`object`: Int?): String {
+        return "Epoch count: $`object`"
+    }
+
+    override fun fromString(string: String?): Int {
+        return string!!.replace("[^\\d]", "").toInt()
+    }
+
 }

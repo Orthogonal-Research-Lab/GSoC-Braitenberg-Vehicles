@@ -2,6 +2,7 @@ package agent.brain
 
 import DoubleVector
 import Matrix
+import WrongLengthException
 import org.nield.kotlinstatistics.WeightedCoin
 import round
 import sum
@@ -27,6 +28,10 @@ open class Network(
         var signal: DoubleVector? = null
     ) {
 
+        /**
+         * Calculate outgoing signal based on incoming signals (requested bottom-up).
+         * //TODO reduce the runtime of O(|V|*|E|)?
+         */
         fun shoot(): DoubleVector {
             if (signal != null) {
                 return activation(signal!!)
@@ -38,11 +43,11 @@ open class Network(
     }
 
     /**
-     * Propagate the signal and get the vector output for motors
+     * Propagate the signal and get the vector output of motor movement vectors.
      */
     fun propagate(signal: Array<DoubleVector>): Array<DoubleVector> {
         check(signal.size == inputNeurons.size) {
-            throw IllegalArgumentException("Signal dimension must be equal to the input layer dimension!")
+            throw WrongLengthException("signal", signal.size, inputNeurons.size)
         }
         // supply signal to input neurons
         signal.withIndex().forEach { (idx, e) ->
@@ -58,7 +63,7 @@ open class Network(
      */
     fun toBinary(): BinaryRepresentation {
         check(this.inputNeurons.size == this.outputNeurons.size && this.inputNeurons.size == 2) {
-            throw Exception("Output and input layers should always be 2 neurons long!")
+            throw WrongLengthException("input or output neurons", this.inputNeurons.size, 2)
         }
         val nodeCount = this.innerNeurons.size + Factory.SURF_NEURONS_COUNT * 2
         val na = NeuronAdapter(
@@ -80,7 +85,6 @@ open class Network(
             }
         }
         //type conversions
-        null
         return BinaryRepresentation(representation)
     }
 

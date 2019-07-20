@@ -7,11 +7,13 @@ import angleToXAxis
 import check
 import degrees
 import javafx.animation.KeyValue
+import javafx.event.EventHandler
 import javafx.scene.Node
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import model.SimModel
 import model.WorldObject
+import presenter.SimPresenter
 import sum
 import tornadofx.*
 import view.VehicleGroup
@@ -25,7 +27,20 @@ class Vehicle(
     var speed: DoubleVector,
     var brain: Network
 ) {
-    val render = VehicleGroup(sensors.map { it.shape } + motors.map { it.shape } + listOf<Node>(body.shape))
+    val presenter = find(SimPresenter::class)
+
+    val render = initRender()
+
+    fun initRender(): VehicleGroup {
+        val out = VehicleGroup(sensors.map { it.shape } + motors.map { it.shape } + listOf<Node>(body.shape))
+        out.onMouseClicked = EventHandler { _ -> this.showVehicleInformation() }
+        return out
+    }
+
+    private fun showVehicleInformation() {
+        presenter.showVehicleInformation(this)
+    }
+
     val model: SimModel by SimModel
     var oldSpeed: DoubleVector = DoubleVector(0.0, 0.0) //used for rotation computation
 
@@ -229,3 +244,4 @@ class Vehicle(
         }
     }
 }
+

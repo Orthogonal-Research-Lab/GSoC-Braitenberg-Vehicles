@@ -9,10 +9,21 @@ fun main(args: Array<String>) {
 }
 
 class Styles : Stylesheet() {
+
+    companion object {
+        val infobutton by cssclass()
+    }
+
     init {
         root {
             minWidth = 600.px
             minHeight = 600.px
         }
+
+        Companion.infobutton {
+            padding = box(0.px)
+            spacing = 0.px
+        }
+
     }
 }
