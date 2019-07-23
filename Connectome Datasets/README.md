@@ -8,4 +8,12 @@ Male _C. elegans_ connectome: Cook et.al (2019). [Whole-animal connectomes of bo
 
 Experimentally-mediated connectivity changes in _Drosophila_: Valdes-Aleman, J. (2019). [Synaptic specificity is collectively determined by partner identity, location and activity](https://www.biorxiv.org/content/10.1101/697763v1). bioRxiv, doi:10.1101/697763.
 
+Connectome data from an artificial segmented multi-legged robot: 
+
+Paper: 
+Daun, S., Mantziaris, C., Toth, T.I., Buschges, A., and Rosjat, N. (2019). [Unravelling intra- and intersegmental neuronal 
+connectivity between central pattern generating networks in a multi-legged locomotor system](https://www.biorxiv.org/content/10.1101/453423v4). _bioRxiv_, doi:10.1101/453423.
+
+Data:
+Rosjat, N., Daun, S., Buschges, A., Mantziaris, C., and Toth, T.I. (2019). [Data from: Unravelling intra- and intersegmental neuronal connectivity between central pattern generating networks in a multi-legged locomotor system](https://doi.org/10.6084/m9.figshare.7831772.v1). _Figshare_, doi:10.6084/m9.figshare.7831772.
 
