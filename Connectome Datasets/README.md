@@ -1,4 +1,4 @@
-## Connectome data:  
+## General Connectome data:  
 
 Neurodata offers a number of adjacency matrices for several different species   [link](https://neurodata.io/project/connectomes/)  
 
@@ -8,7 +8,7 @@ Male _C. elegans_ connectome: Cook et.al (2019). [Whole-animal connectomes of bo
 
 Experimentally-mediated connectivity changes in _Drosophila_: Valdes-Aleman, J. (2019). [Synaptic specificity is collectively determined by partner identity, location and activity](https://www.biorxiv.org/content/10.1101/697763v1). bioRxiv, doi:10.1101/697763.
 
-Connectome data from an artificial segmented multi-legged robot: 
+#### Artificial segmented multi-legged connectome
 
 Paper: 
 Daun, S., Mantziaris, C., Toth, T.I., Buschges, A., and Rosjat, N. (2019). [Unravelling intra- and intersegmental neuronal 
@@ -17,3 +17,7 @@ connectivity between central pattern generating networks in a multi-legged locom
 Data:
 Rosjat, N., Daun, S., Buschges, A., Mantziaris, C., and Toth, T.I. (2019). [Data from: Unravelling intra- and intersegmental neuronal connectivity between central pattern generating networks in a multi-legged locomotor system](https://doi.org/10.6084/m9.figshare.7831772.v1). _Figshare_, doi:10.6084/m9.figshare.7831772.
 
+#### Mushroom Body connectome in _Drosophila_
+Eichler, K. et.al (2017). [The complete connectome of a learning and memory centre in an insect brain](https://www.nature.com/articles/nature23455). _Nature_, 548, 175–182.
+
+Takemura, S. (2017). [A connectome of a learning and memory center in the adult Drosophila brain](https://elifesciences.org/articles/26975). _eLife_, 6, e26975. doi:10.7554/eLife.26975.
