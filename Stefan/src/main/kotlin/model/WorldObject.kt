@@ -49,5 +49,27 @@ class WorldObject(
                 Random.nextDouble(effectMin, effectMax)
             )
         }
+
+        fun randomWorldObjects(
+            worldWidth: Double,
+            worldHeight: Double,
+            effectMin: Double,
+            effectMax: Double,
+            size: Double,
+            many: Int
+        ): MutableSet<WorldObject> {
+            val worldObjects: MutableSet<WorldObject> = mutableSetOf()
+            for (i in 1..many) worldObjects.add(
+                randomWorldObject(
+                    worldWidth,
+                    worldHeight,
+                    effectMin,
+                    effectMax,
+                    size
+                )
+            )
+            return worldObjects
+        }
+
     }
 }

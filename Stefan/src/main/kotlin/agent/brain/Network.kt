@@ -3,6 +3,7 @@ package agent.brain
 import DoubleVector
 import Matrix
 import WrongLengthException
+import AdjacencyMatrixCircuitsPossible
 import org.nield.kotlinstatistics.WeightedCoin
 import round
 import sum
@@ -129,7 +130,7 @@ open class Network(
          * "From" along x axis and "to" along y.
          */
         fun fromAdjMatrix(matrix: Matrix<Double?>): Network {
-            check(matrix.isUpperHalfFree()) { throw Exception("Only values under diagonal are allowed!") }
+            check(matrix.isUpperHalfFree()) { throw AdjacencyMatrixCircuitsPossible() }
             val inputNeurons = arrayOf(Neuron(), Neuron())
             val innerNeurons = mutableListOf<Neuron>()
             for (inidx in 2 until matrix.xSize - 2) { //convention: first two and last two neurons are input/output

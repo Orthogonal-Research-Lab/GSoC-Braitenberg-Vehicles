@@ -41,7 +41,7 @@ class SimPresenter() : Controller() {
         this.conf = conf
         interval = ceil(1000F / conf.fps.value.toDouble()).toInt()
         model =
-            SimModel.Factory.instance(
+            SimModel.instance(
                 conf.worldWidth.value.toDouble(),
                 conf.worldHeight.value.toDouble(),
                 effectMin = conf.minObjectEffect.value.toDouble(),
