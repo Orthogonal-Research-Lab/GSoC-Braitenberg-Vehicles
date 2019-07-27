@@ -1,4 +1,7 @@
 ## Here is a list of tools for graph-building:
+PyQT5 [project website](https://pypi.org/project/PyQt5/)
+
+PyQTGraph [project website](http://www.pyqtgraph.org/)
 
 Matplotlib [project website](https://matplotlib.org/)  
 
