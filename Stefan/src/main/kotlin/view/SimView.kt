@@ -16,8 +16,9 @@ import tornadofx.*
 import kotlin.system.exitProcess
 
 class SimView : View() {
-    val presenter: SimPresenter by inject()
-    val canvas: AnchorPane
+    private val presenter = find(SimPresenter::class)
+    private val canvas: AnchorPane
+    private val speedsHist: RealTimeHistogram
 
     override val root = vbox {
         anchorpane {
@@ -32,10 +33,18 @@ class SimView : View() {
 
     init {
         canvas = root.children.filtered { it is AnchorPane }[0] as AnchorPane
+        speedsHist = RealTimeHistogram(presenter.getCurrentVehicles().map { it.speed.x }, presenter, "Current vehicle x-axis speeds", bins = 5)
         subscribe<UpdateRenderEvent> {
             if (!canvas.getChildList()!!.any { it is WorldObjectGroup }) renderWorldObjects(presenter.getCurrentWorldObjects())
             renderVehicles(presenter.getCurrentVehicles())
+
             presenter.renderReady()
+        }
+        var speeds: List<Double>
+        subscribe<RenderReadyEvent> {
+            speeds = presenter.getCurrentVehicles().map { it.speed.x }
+            speedsHist.updateData(speeds)
+
         }
     }
 
@@ -51,7 +60,7 @@ class SimView : View() {
     /**
      * Fetches the infobutton with immage. World width is used to change its square measurement.
      */
-    fun infobutton(worldWidth: Double): Button {
+    private fun infobutton(worldWidth: Double): Button {
         val resF = path(
             "file:///",
             "C:",
@@ -79,7 +88,7 @@ class SimView : View() {
     }
 
 
-    fun processInput(code: KeyCode) {
+    private fun processInput(code: KeyCode) {
         when (code) {
             KeyCode.ESCAPE -> {
                 presenter.running = false

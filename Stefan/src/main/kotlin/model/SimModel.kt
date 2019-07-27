@@ -137,17 +137,8 @@ class SimModel(
 
             }
 
-            val startWorldObjects: MutableSet<WorldObject> = mutableSetOf()
-            val objectSize = 10.0
-            for (i in 1..worldObjectCount) startWorldObjects.add(
-                WorldObject.randomWorldObject(
-                    worldWidth,
-                    worldHeight,
-                    effectMin,
-                    effectMax,
-                    objectSize
-                )
-            )
+            val startWorldObjects: MutableSet<WorldObject> = WorldObject.randomWorldObjects(effectMax = effectMax,
+                effectMin = effectMin, worldHeight = worldHeight, worldWidth = worldWidth, size = 10.0, many = worldObjectCount)
             singleton = SimModel(
                 worldWidth,
                 worldHeight,
