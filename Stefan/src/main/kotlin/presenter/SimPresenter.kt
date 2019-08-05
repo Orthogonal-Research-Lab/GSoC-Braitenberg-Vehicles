@@ -2,6 +2,7 @@ package presenter
 
 import agent.Vehicle
 import config.SimConfigItem
+import data.DataExporter
 import data.SimInfo
 import data.VehicleInfo
 import javafx.animation.Timeline
@@ -29,6 +30,8 @@ class SimPresenter() : Controller() {
     init {
         subscribe<RenderReadyEvent> {
             if (running and !paused) {
+                DataExporter.exportTo("datatrace", model)
+                model.tick++
                 updateRender()
             }
         }

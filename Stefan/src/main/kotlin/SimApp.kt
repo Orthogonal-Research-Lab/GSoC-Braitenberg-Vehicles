@@ -1,8 +1,14 @@
+import data.DataExporter
 import javafx.application.Application
 import tornadofx.*
 import view.WelcomeScreen
 
-class SimApp : App(WelcomeScreen::class, Styles::class)
+class SimApp : App(WelcomeScreen::class, Styles::class) {
+
+    override fun stop() {
+        super.stop()
+    }
+}
 
 fun main(args: Array<String>) {
     Application.launch(SimApp::class.java, *args)

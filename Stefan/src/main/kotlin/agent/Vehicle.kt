@@ -14,6 +14,7 @@ import javafx.scene.shape.Rectangle
 import model.SimModel
 import model.WorldObject
 import presenter.SimPresenter
+import alphaNumericId
 import sum
 import tornadofx.*
 import view.VehicleGroup
@@ -28,6 +29,7 @@ class Vehicle(
     var brain: Network
 ) {
     val presenter = find(SimPresenter::class)
+    val id = alphaNumericId(10)
 
     val render = initRender()
 
