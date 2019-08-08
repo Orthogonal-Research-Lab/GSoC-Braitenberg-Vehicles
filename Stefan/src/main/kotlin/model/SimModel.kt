@@ -29,6 +29,7 @@ class SimModel(
     val selectLuckyCoin = WeightedCoin(rateLuckySelected)
     var epochCount by property<Int>(0)
     fun epochCountProperty() = getProperty(SimModel::epochCount)
+    var tick = 0
 
     /**
      * Returns vehicles active after an epoch update.

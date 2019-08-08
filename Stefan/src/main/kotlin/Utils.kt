@@ -8,6 +8,7 @@ import java.util.*
 import kotlin.math.*
 import kotlin.random.Random
 import kotlin.reflect.KClass
+import kotlin.streams.asSequence
 
 /**
  * This class is more for trying around, than bringing real value.
@@ -288,4 +289,12 @@ class EpochInfoConverter : StringConverter<Int>() {
         return string!!.replace("[^\\d]", "").toInt()
     }
 
+}
+
+fun alphaNumericId(outputStrLength: Int): String {
+    val allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz0123456789"
+    return java.util.Random().ints(outputStrLength.toLong(), 0, allowedChars.length)
+        .asSequence()
+        .map(allowedChars::get)
+        .joinToString("")
 }

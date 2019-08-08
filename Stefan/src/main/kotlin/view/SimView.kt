@@ -18,7 +18,7 @@ import kotlin.system.exitProcess
 class SimView : View() {
     private val presenter = find(SimPresenter::class)
     private val canvas: AnchorPane
-    private val speedsHist: RealTimeHistogram
+    private val speedsScatter: RealTimeScatter
 
     override val root = vbox {
         anchorpane {
@@ -33,7 +33,8 @@ class SimView : View() {
 
     init {
         canvas = root.children.filtered { it is AnchorPane }[0] as AnchorPane
-        speedsHist = RealTimeHistogram(presenter.getCurrentVehicles().map { it.speed.x }, presenter, "Current vehicle x-axis speeds", bins = 5)
+        speedsScatter = RealTimeScatter(presenter.getCurrentVehicles().map { it.speed.x },presenter.getCurrentVehicles().map { it.speed.y },
+            "Current vehicle x-axis speeds")
         subscribe<UpdateRenderEvent> {
             if (!canvas.getChildList()!!.any { it is WorldObjectGroup }) renderWorldObjects(presenter.getCurrentWorldObjects())
             renderVehicles(presenter.getCurrentVehicles())
@@ -42,9 +43,12 @@ class SimView : View() {
         }
         var speeds: List<Double>
         subscribe<RenderReadyEvent> {
-            speeds = presenter.getCurrentVehicles().map { it.speed.x }
-            speedsHist.updateData(speeds)
-
+            if (System.currentTimeMillis() - speedsScatter.lastUpdate >= 1000) {
+                val vehicles = presenter.getCurrentVehicles()
+                val speedsX = vehicles.map { it.speed.x }
+                val speedsY = vehicles.map { it.speed.y }
+                speedsScatter.updateData(speedsX, speedsY)
+            }
         }
     }
 
