@@ -41,7 +41,7 @@ class WelcomeScreen : View("Welcome to the GA Braitenberg vehicles simulation!")
                 fieldset("World parameters:") {
                     field("World length") {
                         spinner(
-                            min = 100.0,
+                            min = 250.0,
                             max = 10000.0,
                             amountToStepBy = 10,
                             editable = true,
@@ -50,7 +50,7 @@ class WelcomeScreen : View("Welcome to the GA Braitenberg vehicles simulation!")
                     }
                     field("World width") {
                         spinner(
-                            min = 100.0,
+                            min = 250.0,
                             max = 10000.0,
                             amountToStepBy = 10,
                             editable = true,
