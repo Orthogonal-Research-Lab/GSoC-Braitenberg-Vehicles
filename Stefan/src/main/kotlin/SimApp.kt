@@ -1,12 +1,14 @@
-import data.DataExporter
+
 import javafx.application.Application
 import tornadofx.*
 import view.WelcomeScreen
+import java.awt.Window
 
 class SimApp : App(WelcomeScreen::class, Styles::class) {
 
     override fun stop() {
         super.stop()
+        Window.getWindows().forEach { it.dispose() } //close all additional rendering (e.g. plot) frames
     }
 }
 
@@ -22,8 +24,8 @@ class Styles : Stylesheet() {
 
     init {
         root {
-            minWidth = 600.px
-            minHeight = 600.px
+            minWidth = 800.px
+            minHeight = 800.px
         }
 
         Companion.infobutton {

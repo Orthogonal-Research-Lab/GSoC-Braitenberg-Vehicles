@@ -101,7 +101,7 @@ class SimModel(
 
 
     companion object Factory {
-        var singleton: SimModel? = null
+        private var singleton: SimModel? = null
         /**
          * All vehicles default, have same length, default world objects.
          */
