@@ -111,6 +111,18 @@ class DoubleVector(vararg elements: Double) {
         return DoubleVector(*out)
     }
 
+    /**
+     * Vector product
+     */
+    infix fun x(o: DoubleVector) : DoubleVector {
+        require(this.length <= 3 && o.length <= 3)
+        val (u1, u2, u3) = arrayOf(elements[0], elements[1], elements[2])
+        val (v1, v2, v3) = arrayOf(o.elements[0], o.elements[1], o.elements[2])
+        return DoubleVector(u2 * v3 - v2 * u3,
+            v1 * u3 - u1 * v3,
+            u1 * v2 - v1 * u2)
+    }
+
     fun copy(): DoubleVector {
         return DoubleVector(*this.elements.copyOf())
     }
@@ -206,7 +218,7 @@ class Matrix<T>(val xSize: Int, val ySize: Int, val array: Array<Array<T>>) {
     }
 
     override fun toString(): String {
-        return "Matrix: \n${array.map { Arrays.toString(it) }})"
+        return "Matrix: \n${array.map { Arrays.toString(it) + "\n"}})"
     }
 
 
@@ -298,3 +310,4 @@ fun alphaNumericId(outputStrLength: Int): String {
         .map(allowedChars::get)
         .joinToString("")
 }
+

@@ -41,7 +41,6 @@ class SimView : View() {
 
             presenter.renderReady()
         }
-        var speeds: List<Double>
         subscribe<RenderReadyEvent> {
             if (System.currentTimeMillis() - speedsScatter.lastUpdate >= 1000) {
                 val vehicles = presenter.getCurrentVehicles()

@@ -13,7 +13,6 @@ class WelcomeScreen : View("Welcome to the GA Braitenberg vehicles simulation!")
     val model: SimConfigItem by inject()
     val presenter: SimPresenter by inject()
 
-
     override val root = scrollpane {
         label("Welcome! Please, specify starting parameters:")
         form {
@@ -192,6 +191,16 @@ class WelcomeScreen : View("Welcome to the GA Braitenberg vehicles simulation!")
                         editable = true,
                         property = model.rateLuckySelected
                     )
+                }
+            }
+            fieldset("Utilities") {
+                field("Data trace directory") {
+                    button("Choose directory..."){
+                        action{
+                            val dir = chooseDirectory("Select a directory")
+                            if (dir != null) model.dataTraceDir.value = dir.getPath()
+                        }
+                    }
                 }
             }
 

@@ -91,10 +91,11 @@ class SimModel(
         this.vehicles.removeAll(died)
     }
 
+    @ExperimentalUnsignedTypes
     private fun fitness(individuals: Collection<Vehicle>): HashMap<Vehicle, Double> {
         val out = hashMapOf<Vehicle, Double>()
         individuals.forEach {
-            out.put(it, it.speed.vecLength() + it.oldSpeed.vecLength())
+            out.put(it, it.fitness())
         }
         return out
     }

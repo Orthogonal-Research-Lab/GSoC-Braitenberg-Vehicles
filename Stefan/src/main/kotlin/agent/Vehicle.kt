@@ -18,6 +18,7 @@ import alphaNumericId
 import sum
 import tornadofx.*
 import view.VehicleGroup
+import java.util.*
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -26,7 +27,7 @@ class Vehicle(
     private val body: Body,
     private val motors: Array<Motor>,
     private val sensors: Array<Sensor>,
-    var speed: DoubleVector,
+    speed: DoubleVector,
     var brain: Network
 ) {
     private val presenter = find(SimPresenter::class)
@@ -45,7 +46,17 @@ class Vehicle(
         presenter.showVehicleInformation(this)
     }
 
-    var oldSpeed: DoubleVector = DoubleVector(0.0, 0.0) //used for rotation computation
+    var speed: DoubleVector = speed
+        get() = speedArchive[0]
+
+    var speedLastTurn: DoubleVector = DoubleVector(0.0, 0.0)
+        get() = speedArchive[1]
+
+    private var speedArchive = LinkedList<DoubleVector>()
+
+    init{
+        speedArchive.addFirst(speed)
+    }
 
     private fun getAngle() = angleToXAxis(Dot(this.speed.x, this.speed.y))
     private fun getLayoutX() = this.body.shape.layoutX
@@ -54,15 +65,16 @@ class Vehicle(
     private fun getY() = (this.body.shape as Rectangle).y + this.getLayoutY()
 
 
-
     /**
      * Changes velocity and dAngle of current vehicle, based on sensors affected by objects in the world.
      */
-    fun updateSpeed(affectors: Collection<WorldObject>) {
-        // save for angle computation
-        this.oldSpeed = this.speed.copy()
-        this.speed = this.perceptEffects(affectors)
+    fun updateSpeedsArchive(affectors: Collection<WorldObject>) {
+        if (this.speedArchive.size >= 5) { //deque filled, make space on the end
+            this.speedArchive.removeLast()
+        }
+        this.speedArchive.addFirst(this.perceptEffects(affectors))
     }
+
 
     private fun perceptEffects(affectors: Collection<WorldObject>): DoubleVector {
         val sensorInput = this.sensors.map { it.percept(affectors) }
@@ -81,14 +93,10 @@ class Vehicle(
         val (fromRight, fromDown) = arrayOf(abs(model.worldEnd.x - fromLeft), abs(model.worldEnd.y - fromUp))
         // truncate speed vectors to out of bounds
         val out = adjustSpeedInLimits(speed, arrayOf(fromLeft, fromUp, fromRight, fromDown))
-//        if ((this.body.shape as Rectangle).x + this.getLayoutX() > model.worldEnd.x && speed.x > 0) {
-//            speed.x = -speed.x
-//        }
-//        if ((this.body.shape as Rectangle).y > model.worldEnd.y && speed.y > 0) speed.y = -speed.y
         val c = 100.0
         val adjustedSpeed = DoubleVector(
-            speed.x + repulseFun(fromLeft, c) - repulseFun(fromRight, c)
-            , speed.y + repulseFun(fromUp, c) - repulseFun(fromDown, c)
+            out.x + repulseFun(fromLeft, c) - repulseFun(fromRight, c)
+            , out.y + repulseFun(fromUp, c) - repulseFun(fromDown, c)
         )
         return adjustedSpeed
     }
@@ -111,6 +119,21 @@ class Vehicle(
         else return abs(1 / abs(distance / c))
     }
 
+    /**
+     * GA survival fitness of an individual vehicle
+     */
+    fun fitness(): Double {
+        //Area under speeds archive polygon
+        // TODO correct calculation for self-intersecting polygons
+        val xCoords = this.speedArchive.map { it.x }
+        val yCoords = this.speedArchive.map { it.y }
+        var areaUnderPolygon = 0.0
+        for (i in 0 until xCoords.size - 1) {
+            areaUnderPolygon += xCoords[i]*yCoords[i+1] - xCoords[i + 1]*yCoords[i]
+        }
+        return areaUnderPolygon
+    }
+
 
     /**
      * Next rotation angle, given in radians.
@@ -119,7 +142,7 @@ class Vehicle(
         // Delta of the angles of old and current speed vector
         val angleNow = this.getAngle()
         val anglePrev = angleToXAxis(
-            Dot(this.oldSpeed.x, this.oldSpeed.y)
+            Dot(this.speedLastTurn.x, this.speedLastTurn.y)
         )
         return angleNow - anglePrev
     }
@@ -129,7 +152,7 @@ class Vehicle(
      * Takes speed and dAngle now and calculates transformations for each body part
      */
     fun calcCurrentUpdate(affectors: MutableSet<WorldObject>): Set<KeyValue> {
-        this.updateSpeed(affectors)
+        this.updateSpeedsArchive(affectors)
         val animation = animationChanges()
         return animation
     }
