@@ -15,9 +15,9 @@ open class Network(
     val innerNeurons: Set<Neuron>,
     val inputNeurons: Array<Neuron>,
     val outputNeurons: Array<Neuron>,
-    val connections: Set<Edge>
+    val connections: Set<Edge>,
+    val adjMatrix: Matrix<Double?>
 ) {
-
     init {
         (innerNeurons + inputNeurons + outputNeurons).forEach { it.network = this }
     }
@@ -97,16 +97,12 @@ open class Network(
          * 1 hidden layer, 2*2d input and output.
          */
         fun smallAutoencoder(): Network {
-            val (i1, i2) = arrayOf(Neuron(), Neuron())
-            val h1 = Neuron()
-            val (o1, o2) = arrayOf(Neuron(), Neuron())
-            val connections = setOf(
-                Edge(i1, h1, 1.0),
-                Edge(i2, h1, 1.0),
-                Edge(h1, o1, 0.4),
-                Edge(h1, o2, 0.6)
-            )
-            return Network(setOf(h1), arrayOf(i1, i2), arrayOf(o1, o2), connections)
+            val adjMatrix = Matrix<Double>(5, 5)
+            adjMatrix[1,3] = 1.0
+            adjMatrix[2,3] = 1.0
+            adjMatrix[3,4] = 0.4
+            adjMatrix[3,5] = 0.6
+            return fromAdjMatrix(adjMatrix)
         }
 
         /**
@@ -152,7 +148,7 @@ open class Network(
                         connections.add(Edge(na[i], na[j], matrix[i, j] ?: 0.0))
                 }
             }
-            return Network(innerNeurons.toSet(), inputNeurons, outputNeurons, connections.toSet())
+            return Network(innerNeurons.toSet(), inputNeurons, outputNeurons, connections.toSet(), matrix)
         }
 
         /**

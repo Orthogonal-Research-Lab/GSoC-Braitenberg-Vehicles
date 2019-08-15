@@ -30,7 +30,7 @@ class SimPresenter() : Controller() {
     init {
         subscribe<RenderReadyEvent> {
             if (running and !paused) {
-                DataExporter.exportTo("datatrace", model)
+                DataExporter.exportTo(conf.dataTraceDir.value, model)
                 model.tick++
                 updateRender()
             }

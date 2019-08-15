@@ -1,5 +1,3 @@
-import model.SimModel
-import model.WorldObject
 import org.junit.jupiter.api.BeforeEach
 import tornadofx.*
 import kotlin.math.abs
