@@ -6,3 +6,6 @@ Another project I'm beginning to work on in Orthogonal Labs is an EGRT related p
 
 <h2>Presentations</h2>
 Paper review presentation: "Neurodynamics in the Sensorimotor Loop - Representing Behavior Relevant External Situations", Frank Passerman
+
+
+<h2>Relevant Papers</h2>
