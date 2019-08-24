@@ -11,11 +11,24 @@ Ankit Gupta
 
 ### Software   
 
+
+
 ### Theory  
+
+Complex Networks
+Lineage Trees
+
 
 ### Papers  
 
+
+
 ### Open Dataset  
 
-### Experiments  
+
+
+### Experiments
+
+Spatial Cognition  
+Sensory Integration  
 
