@@ -1,0 +1,174 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SimPresenter - Braitenberg-Vehicles</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Braitenberg-Vehicles</a>&nbsp;/&nbsp;<a href="../index.html">presenter</a>&nbsp;/&nbsp;<a href="./index.html">SimPresenter</a><br/>
+<br/>
+<h1>SimPresenter</h1>
+<code><span class="keyword">class </span><span class="identifier">SimPresenter</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Controller</span></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SimPresenter</span><span class="symbol">(</span><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="conf.html">conf</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">conf</span><span class="symbol">: </span><a href="../../config/-sim-config-item/index.html"><span class="identifier">SimConfigItem</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="config-view.html">configView</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">configView</span><span class="symbol">: </span><a href="../../view/-welcome-screen/index.html"><span class="identifier">WelcomeScreen</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="interval.html">interval</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">interval</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="model.html">model</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">model</span><span class="symbol">: </span><a href="../../model/-sim-model/index.html"><span class="identifier">SimModel</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="paused.html">paused</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">paused</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="running.html">running</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">running</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="view.html">view</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">view</span><span class="symbol">: </span><a href="../../view/-sim-view/index.html"><span class="identifier">SimView</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="epoch-count-property.html">epochCountProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">epochCountProperty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">ObjectProperty</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="get-current-vehicles.html">getCurrentVehicles</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getCurrentVehicles</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><a href="../../agent/-vehicle/index.html"><span class="identifier">Vehicle</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="get-current-world-objects.html">getCurrentWorldObjects</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getCurrentWorldObjects</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html"><span class="identifier">MutableSet</span></a><span class="symbol">&lt;</span><a href="../../model/-world-object/index.html"><span class="identifier">WorldObject</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="open-sim-info-fragment.html">openSimInfoFragment</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">openSimInfoFragment</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="pause.html">pause</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">pause</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="queue-epoch-update.html">queueEpochUpdate</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">queueEpochUpdate</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Queues genetic algorithm update and waits until it finishes. Returns outselected vehicles.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="render-ready.html">renderReady</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">renderReady</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="show-vehicle-information.html">showVehicleInformation</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">showVehicleInformation</span><span class="symbol">(</span><span class="identifier" id="presenter.SimPresenter$showVehicleInformation(agent.Vehicle)/vehicle">vehicle</span><span class="symbol">:</span>&nbsp;<a href="../../agent/-vehicle/index.html"><span class="identifier">Vehicle</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="start-simulation.html">startSimulation</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">startSimulation</span><span class="symbol">(</span><span class="identifier" id="presenter.SimPresenter$startSimulation(config.SimConfigItem)/conf">conf</span><span class="symbol">:</span>&nbsp;<a href="../../config/-sim-config-item/index.html"><span class="identifier">SimConfigItem</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Create world, starting vehicles &amp; launch the rendering process.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="this-tick-animation.html">thisTickAnimation</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">thisTickAnimation</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Timeline</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="unpause.html">unpause</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">unpause</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="update-render.html">updateRender</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">updateRender</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Updates render frame</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

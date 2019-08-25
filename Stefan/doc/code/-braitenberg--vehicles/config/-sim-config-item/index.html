@@ -1,0 +1,259 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SimConfigItem - Braitenberg-Vehicles</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Braitenberg-Vehicles</a>&nbsp;/&nbsp;<a href="../index.html">config</a>&nbsp;/&nbsp;<a href="./index.html">SimConfigItem</a><br/>
+<br/>
+<h1>SimConfigItem</h1>
+<code><span class="keyword">class </span><span class="identifier">SimConfigItem</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ItemViewModel</span><span class="symbol">&lt;</span><a href="../-sim-config/index.html"><span class="identifier">SimConfig</span></a><span class="symbol">&gt;</span></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SimConfigItem</span><span class="symbol">(</span><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="brain-size.html">brainSize</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">brainSize</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="data-trace-dir.html">dataTraceDir</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">dataTraceDir</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="fps.html">fps</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">fps</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-d-a-t-a-t-r-a-c-e-d-i-r.html">KEY_DATATRACEDIR</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_DATATRACEDIR</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-d-e-f-a-u-l-t_-f-p-s.html">KEY_DEFAULT_FPS</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_DEFAULT_FPS</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-d-e-f-a-u-l-t_-s-t-a-r-t-i-n-g-v-e-h-i-c-l-e-s.html">KEY_DEFAULT_STARTINGVEHICLES</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_DEFAULT_STARTINGVEHICLES</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-m-a-x-e-f-f-e-c-t.html">KEY_MAXEFFECT</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_MAXEFFECT</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-m-i-n-e-f-f-e-c-t.html">KEY_MINEFFECT</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_MINEFFECT</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-o-b-j-c-o-u-n-t.html">KEY_OBJCOUNT</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_OBJCOUNT</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-o-b-j-s-i-z-e.html">KEY_OBJSIZE</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_OBJSIZE</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-r-e-m-e-m-b-e-r.html">KEY_REMEMBER</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_REMEMBER</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-s-e-n-s-d-i-s-t.html">KEY_SENSDIST</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_SENSDIST</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-v-e-h-l-e-n-g-t-h.html">KEY_VEHLENGTH</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_VEHLENGTH</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-v-e-h-w-i-d-t-h.html">KEY_VEHWIDTH</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_VEHWIDTH</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-w-o-r-l-d-h-e-i-g-h-t.html">KEY_WORLDHEIGHT</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_WORLDHEIGHT</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-k-e-y_-w-o-r-l-d-w-i-d-t-h.html">KEY_WORLDWIDTH</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">KEY_WORLDWIDTH</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="mating-rate.html">matingRate</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">matingRate</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="max-object-effect.html">maxObjectEffect</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">maxObjectEffect</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="min-object-effect.html">minObjectEffect</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">minObjectEffect</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="mutation-rate.html">mutationRate</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">mutationRate</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="object-count.html">objectCount</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">objectCount</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="object-size.html">objectSize</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">objectSize</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="rate-elite-selected.html">rateEliteSelected</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">rateEliteSelected</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="rate-lucky-selected.html">rateLuckySelected</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">rateLuckySelected</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="remember.html">remember</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">remember</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="sensors-distance.html">sensorsDistance</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">sensorsDistance</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="starting-agents.html">startingAgents</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">startingAgents</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="vehicle-length.html">vehicleLength</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">vehicleLength</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="vehicle-width.html">vehicleWidth</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">vehicleWidth</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="world-height.html">worldHeight</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">worldHeight</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="world-width.html">worldWidth</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">worldWidth</span><span class="symbol">: </span><span class="identifier">Property</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="on-commit.html">onCommit</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onCommit</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
