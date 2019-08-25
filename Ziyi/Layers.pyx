@@ -87,7 +87,7 @@ cdef class Layer:
         """
         Parameters
         ----------
-        shape : array-like
+        shape : numpy.ndarray or Memoryview or Memoryview
             The numbers of neurons in each layers
         """
 
@@ -121,17 +121,15 @@ cdef class Single(Layer):
 
         Parameters
         ----------
-        I: numpy.ndarray
+        I: numpy.ndarray or Memoryview
             The sensory input
 
         Returns
         ----------
-        out: numpy.ndarray
+        out: Memoryview
             The output
         """
         return self._act_func(I)
-
-
 
 
 
@@ -145,21 +143,23 @@ cdef class LiHopfield(Layer):
     @cython.initializedcheck(False)
     @cython.cdivision(True)
     def __init__(self, int size, int period=50, int memory=2,
-                 double tau=2.0, double adapting_rate=0.0005, 
-                 double I_c=0.1, double th=1, bint enable_GHA=False):
+                 double tau=2.0, bint enable_GHA=False, 
+                 double adapting_rate=1e-8, 
+                 double I_c=0.1, double th=1):
         """
         Parameters
         ----------
         size: int
             The numbers of receptors (= mitral cells = granule cells)
-        act_func : callable
-            The activation function. Default is tanh.
         period: int
             The period during which the agent stay in a spot
         memory: int
             The largest number of period to remember
         tau: float
             The cell time const
+        enable_GHA: bool
+            Whether GHA is enabled
+            Using GHA for LiHopfield in continuous simulation is not recommanded.
         adapting_rate: float
             The rate at which the system gets adapting to the stimulus values
         I_c: float
@@ -307,6 +307,15 @@ cdef class LiHopfield(Layer):
     @cython.initializedcheck(False)
     @cython.cdivision(True)
     cpdef double[::1] feed(self, double[::1] I):
+        """
+        To feed the network with input
+
+        Parameters
+        ----------
+        I: numpy.ndarray or Memoryview
+            The raw input
+        """
+
         # 1D array buffer
         cdef np.ndarray[np.float64_t] one_d = \
             np.zeros(self._size, dtype=np.float64)
@@ -364,6 +373,8 @@ cdef class LiHopfield(Layer):
 
             if self._enable_GHA:
                 # GHA
+                # eta decreases with time and converges to zeros
+                self._eta *= 0.995
                 # MG += eta * (xy - Lxx @ MG)
                 # GM += eta * (yx - Lyy @ GM)
                 _GHA(self._MG, self._Lxx, self._xy, self._eta, 
@@ -382,7 +393,7 @@ cdef class LiHopfield(Layer):
         return self._p
 
 
-    def save_img(self, rad=0.1, fname='li_hop.png'):
+    def save_img(self, rad=0.1, name='li_hop.png'):
         g = nx.MultiDiGraph()
 
         # add edges
@@ -426,8 +437,7 @@ cdef class LiHopfield(Layer):
         fig.set_size_inches(8, 8)
         nx.draw(g, pos=pos, node_color=node_colors, edge_color=edge_colors,
                 connectionstyle='arc3,rad={}'.format(rad), ax=ax)
-        fig.savefig(fname, dpi=100, bbox_inches='tight', transparent=True)
-
+        fig.savefig(name, dpi=100, bbox_inches='tight', transparent=True)
 
 
 
@@ -441,13 +451,14 @@ cdef class BAM(Layer):
         """
         Parameters
         ----------
-        shape : array-like
-            The sizes of pattern X and pattern Y
-        dep_func : callable
-            The synapse depression function.
-            Default is f(x, I) = x - phi / (I * v**2 + phi).
+        norn: int
+            The number of olfactory receptor neurons
+        ngrn: int
+            The number of gustatory receptor neurons
         adapting_rate: float
             The rate at which the system gets adapting to the stimulus values
+        enable_dep: bool
+            Whether depression is enabled
         depression_rate: float
             The rate at which the synapses is decaying due to a lack of activities
         """
@@ -471,6 +482,17 @@ cdef class BAM(Layer):
     @cython.wraparound(False)
     @cython.initializedcheck(False)
     cpdef void learn(self, double[::1] I1, double[::1] I2):
+        """
+        To learn two input patterns
+
+        Parameters
+        ----------
+        I1: numpy.ndarray or Memoryview
+            The raw input 1
+        I2: numpy.ndarray or Memoryview
+            The raw input 2
+        """
+
         cdef np.ndarray[np.float64_t, ndim=2] o = \
             np.zeros(self._shape.T, dtype=np.float64)
         cdef np.ndarray[np.float64_t, ndim=2] l = \
@@ -490,7 +512,9 @@ cdef class BAM(Layer):
         sq_outer(&L[0, 0], &I2[0], &I2[0], self._shape[1], LT)
 
         # GHA
-        # W += eta * O - L @ W
+        # eta decreases with time and converges to zeros
+        self._eta *= 0.995
+        # W += eta * (O - L @ W)
         _GHA(self._W, L, O, self._eta, self._shape[1], self._shape[0])
 
 
@@ -506,16 +530,30 @@ cdef class BAM(Layer):
     @cython.wraparound(False)
     @cython.initializedcheck(False)
     @cython.cdivision(True)
-    cpdef double[::1] recall(self, double[::1] I):
+    cpdef double[::1] recall(self, double[::1] I1):
+        """
+        To recall the pattern corresponding to the input
+
+        Parameters
+        ----------
+        I1: numpy.ndarray or Memoryview
+            The raw input
+
+        Returns
+        ----------
+        I2: Memoryview
+            The recalled pattern
+        """
+
         cdef np.ndarray[np.float64_t] r = \
             np.zeros(self._shape[1], dtype=np.float64)
         cdef double[::1] R = r.copy(order='F')
         cdef int m = self._shape[1]
         cdef int n = self._shape[0]
 
-        # R = W @ I
+        # R = W @ I1
         blas.dgemv(&NO, &m, &n, &POS1, &self._W[0, 0], &m, 
-                    &I[0], &LD, &ZERO, &R[0], &LD)
+                    &I1[0], &LD, &ZERO, &R[0], &LD)
         # euclidean norm
         cdef double norm = blas.dnrm2(&m, &R[0], &LD)
 
@@ -529,7 +567,7 @@ cdef class BAM(Layer):
         return self._W
 
 
-    def save_img(self, fname='bam.png'):
+    def save_img(self, name='bam.png'):
         g = nx.MultiDiGraph()
 
         # add edges
@@ -547,4 +585,4 @@ cdef class BAM(Layer):
         fig, ax = plt.subplots(1)
         fig.set_size_inches(8, 8)
         nx.draw(g, pos=pos, node_color='black', edge_color='gray', ax=ax)
-        fig.savefig(fname, dpi=100, bbox_inches='tight', transparent=True)
+        fig.savefig(name, dpi=100, bbox_inches='tight', transparent=True)
