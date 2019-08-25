@@ -142,10 +142,6 @@ fun Collection<DoubleVector>.sum(): DoubleVector {
     return out
 }
 
-fun center(bounds: Bounds): Dot {
-    return Dot((bounds.minX + bounds.maxX) / 2, (bounds.minY + bounds.maxY) / 2)
-}
-
 fun sum(vararg elements: Double): Double {
     var out = 0.0
     elements.forEach { out += it }
@@ -218,7 +214,20 @@ class Matrix<T>(val xSize: Int, val ySize: Int, val array: Array<Array<T>>) {
     }
 
     override fun toString(): String {
-        return "Matrix: \n${array.map { Arrays.toString(it) + "\n"}})"
+        val sb = StringBuilder()
+
+        sb.append("\n\t")
+        for (i in 1 until array.size + 1) sb.append("$i\t") // x axis index ("from")
+        sb.append("\n")
+        for (j in 0 until array[0].size){
+            sb.append("${j + 1}\t")// y axis index ("to")
+            for (i in 0 until array.size) {
+                val num = if (this[i,j] is Double) (this[i,j] as Double).round(2) else this[i,j].toString()
+                sb.append("$num\t")
+            }
+            sb.append("\n")
+        }
+        return sb.toString()
     }
 
 
@@ -310,4 +319,7 @@ fun alphaNumericId(outputStrLength: Int): String {
         .map(allowedChars::get)
         .joinToString("")
 }
+
+const val FITNESS_TICKS_MEMORY_LEN = 3
+
 

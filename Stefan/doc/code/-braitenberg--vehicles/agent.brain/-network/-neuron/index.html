@@ -1,0 +1,59 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Network.Neuron - Braitenberg-Vehicles</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">Braitenberg-Vehicles</a>&nbsp;/&nbsp;<a href="../../index.html">agent.brain</a>&nbsp;/&nbsp;<a href="../index.html">Network</a>&nbsp;/&nbsp;<a href="./index.html">Neuron</a><br/>
+<br/>
+<h1>Neuron</h1>
+<code><span class="keyword">class </span><span class="identifier">Neuron</span></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Neuron</span><span class="symbol">(</span><span class="identifier" id="agent.brain.Network.Neuron$<init>(agent.brain.Network, kotlin.Function1((DoubleVector, )), DoubleVector)/network">network</span><span class="symbol">:</span>&nbsp;<a href="../index.html"><span class="identifier">Network</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="agent.brain.Network.Neuron$<init>(agent.brain.Network, kotlin.Function1((DoubleVector, )), DoubleVector)/activation">activation</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">DoubleVector</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">DoubleVector</span>&nbsp;<span class="symbol">=</span>&nbsp;{ sum: DoubleVector -&gt; sum }<span class="symbol">, </span><span class="identifier" id="agent.brain.Network.Neuron$<init>(agent.brain.Network, kotlin.Function1((DoubleVector, )), DoubleVector)/signal">signal</span><span class="symbol">:</span>&nbsp;<span class="identifier">DoubleVector</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="network.html">network</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">network</span><span class="symbol">: </span><a href="../index.html"><span class="identifier">Network</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="signal.html">signal</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">signal</span><span class="symbol">: </span><span class="identifier">DoubleVector</span><span class="symbol">?</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="shoot.html">shoot</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">shoot</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">DoubleVector</span></code>
+<p>Calculate outgoing signal based on incoming signals (requested bottom-up).
+//TODO reduce the runtime of O(|V|*|E|)?</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

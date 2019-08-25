@@ -8,9 +8,6 @@ import round
 import javax.swing.JFrame
 
 
-/**
- * //TODO presenter
- */
 class RealTimeHistogram(values: Collection<Double>, title: String = "Plot",
                         xAxisTitle: String = "Value", yAxisTitle: String = "Frequency",
                         private val bins: Int = 120, width: Int = 800, height: Int = 600

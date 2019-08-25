@@ -1,0 +1,159 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SimModel - Braitenberg-Vehicles</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">Braitenberg-Vehicles</a>&nbsp;/&nbsp;<a href="../index.html">model</a>&nbsp;/&nbsp;<a href="./index.html">SimModel</a><br/>
+<br/>
+<h1>SimModel</h1>
+<code><span class="keyword">class </span><span class="identifier">SimModel</span></code>
+<p>Contains buisness logic of the world. Genetic algorithm part of the model is one-point crossover, elitarism and luck survival.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SimModel</span><span class="symbol">(</span><span class="identifier" id="model.SimModel$<init>(kotlin.Double, kotlin.Double, kotlin.collections.MutableSet((model.WorldObject)), kotlin.collections.MutableList((agent.Vehicle)), kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/worldWidth">worldWidth</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel$<init>(kotlin.Double, kotlin.Double, kotlin.collections.MutableSet((model.WorldObject)), kotlin.collections.MutableList((agent.Vehicle)), kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/worldHeight">worldHeight</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel$<init>(kotlin.Double, kotlin.Double, kotlin.collections.MutableSet((model.WorldObject)), kotlin.collections.MutableList((agent.Vehicle)), kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/objects">objects</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html"><span class="identifier">MutableSet</span></a><span class="symbol">&lt;</span><a href="../-world-object/index.html"><span class="identifier">WorldObject</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="model.SimModel$<init>(kotlin.Double, kotlin.Double, kotlin.collections.MutableSet((model.WorldObject)), kotlin.collections.MutableList((agent.Vehicle)), kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/vehicles">vehicles</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../../agent/-vehicle/index.html"><span class="identifier">Vehicle</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="model.SimModel$<init>(kotlin.Double, kotlin.Double, kotlin.collections.MutableSet((model.WorldObject)), kotlin.collections.MutableList((agent.Vehicle)), kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/mutationRate">mutationRate</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel$<init>(kotlin.Double, kotlin.Double, kotlin.collections.MutableSet((model.WorldObject)), kotlin.collections.MutableList((agent.Vehicle)), kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/matingRate">matingRate</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel$<init>(kotlin.Double, kotlin.Double, kotlin.collections.MutableSet((model.WorldObject)), kotlin.collections.MutableList((agent.Vehicle)), kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/rateEliteSelected">rateEliteSelected</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel$<init>(kotlin.Double, kotlin.Double, kotlin.collections.MutableSet((model.WorldObject)), kotlin.collections.MutableList((agent.Vehicle)), kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/rateLuckySelected">rateLuckySelected</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel$<init>(kotlin.Double, kotlin.Double, kotlin.collections.MutableSet((model.WorldObject)), kotlin.collections.MutableList((agent.Vehicle)), kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/presenter">presenter</span><span class="symbol">:</span>&nbsp;<a href="../../presenter/-sim-presenter/index.html"><span class="identifier">SimPresenter</span></a><span class="symbol">)</span></code>
+<p>Contains buisness logic of the world. Genetic algorithm part of the model is one-point crossover, elitarism and luck survival.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="epoch-count.html">epochCount</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">epochCount</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">!</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="mating-coin.html">matingCoin</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">matingCoin</span><span class="symbol">: </span><span class="identifier">WeightedCoin</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="mutation-coin.html">mutationCoin</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">mutationCoin</span><span class="symbol">: </span><span class="identifier">WeightedCoin</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="objects.html">objects</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">objects</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html"><span class="identifier">MutableSet</span></a><span class="symbol">&lt;</span><a href="../-world-object/index.html"><span class="identifier">WorldObject</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="presenter.html">presenter</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">presenter</span><span class="symbol">: </span><a href="../../presenter/-sim-presenter/index.html"><span class="identifier">SimPresenter</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="rate-elite-selected.html">rateEliteSelected</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">rateEliteSelected</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="select-lucky-coin.html">selectLuckyCoin</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">selectLuckyCoin</span><span class="symbol">: </span><span class="identifier">WeightedCoin</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="tick.html">tick</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">tick</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="vehicles.html">vehicles</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">vehicles</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../../agent/-vehicle/index.html"><span class="identifier">Vehicle</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="world-end.html">worldEnd</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">worldEnd</span><span class="symbol">: </span><span class="identifier">DoubleVector</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="world-height.html">worldHeight</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">worldHeight</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="world-width.html">worldWidth</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">worldWidth</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="epoch-count-property.html">epochCountProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">epochCountProperty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">ObjectProperty</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">!</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="next-epoch.html">nextEpoch</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">nextEpoch</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><a href="../../agent/-vehicle/index.html"><span class="identifier">Vehicle</span></a><span class="symbol">&gt;</span></code>
+<p>Returns vehicles active after an epoch update.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="get-value.html">getValue</a></p>
+</td>
+<td>
+<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="identifier">getValue</span><span class="symbol">(</span><span class="identifier" id="model.SimModel.Factory$getValue(agent.Vehicle, kotlin.reflect.KProperty((kotlin.Any)))/vehicle">vehicle</span><span class="symbol">:</span>&nbsp;<a href="../../agent/-vehicle/index.html"><span class="identifier">Vehicle</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$getValue(agent.Vehicle, kotlin.reflect.KProperty((kotlin.Any)))/property">property</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-property/index.html"><span class="identifier">KProperty</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SimModel</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="instance.html">instance</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">instance</span><span class="symbol">(</span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/worldWidth">worldWidth</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/worldHeight">worldHeight</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/startingVehicles">startingVehicles</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/vehicleLength">vehicleLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/vehicleHeight">vehicleHeight</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/worldObjectCount">worldObjectCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/sensorsDistance">sensorsDistance</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/effectMin">effectMin</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/effectMax">effectMax</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/brainSize">brainSize</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/mutationRate">mutationRate</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/matingRate">matingRate</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/rateEliteSelected">rateEliteSelected</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/rateLuckySelected">rateLuckySelected</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="model.SimModel.Factory$instance(kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Int, kotlin.Double, kotlin.Double, kotlin.Double, kotlin.Double, presenter.SimPresenter)/presenter">presenter</span><span class="symbol">:</span>&nbsp;<a href="../../presenter/-sim-presenter/index.html"><span class="identifier">SimPresenter</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SimModel</span></a></code>
+<p>All vehicles default, have same length, default world objects.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
