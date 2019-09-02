@@ -10,11 +10,12 @@ Jesse Parent
 Ankit Gupta  
 
 ### Software   
-
+BraGenBrain (Stefan Dvoretskii)
 
 
 ### Theory  
-
+Embodied Cognition
+Cybernetics
 Complex Networks
 Lineage Trees
 
