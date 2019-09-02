@@ -14,10 +14,10 @@ BraGenBrain (Stefan Dvoretskii)
 
 
 ### Theory  
-Embodied Cognition
-Cybernetics
-Complex Networks
-Lineage Trees
+Embodied Cognition  
+Cybernetics  
+Complex Networks  
+Lineage Trees  
 
 
 ### Papers  
@@ -30,6 +30,11 @@ Lineage Trees
 
 ### Experiments
 
-Spatial Cognition  
-Sensory Integration  
+Spatial Cognition   
+
+* navigating the [Traveling Salesman Problem (TSP)](https://en.wikipedia.org/wiki/Travelling_salesman_problem)
+
+Sensory Integration   
+
+* developing olfaction and gustation   
 
