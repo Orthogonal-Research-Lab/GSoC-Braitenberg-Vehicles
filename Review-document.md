@@ -19,6 +19,11 @@ Cybernetics
 Complex Networks  
 Lineage Trees  
 
+## Methods  
+Evolutionary Algorithms  
+Neural Networks  
+Deep Learning  
+
 
 ### Papers  
 
@@ -37,4 +42,3 @@ Spatial Cognition
 Sensory Integration   
 
 * developing olfaction and gustation   
-
