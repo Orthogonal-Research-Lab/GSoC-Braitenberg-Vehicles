@@ -11,7 +11,10 @@ Ankit Gupta
 
 ### Software   
 BraGenBrain (Stefan Dvoretskii)
+Multisensory Processing (Ziyi Gong)
 
+### Commercialization
+Vehicles for Machine Learning applications (Ankit Gupta)
 
 ### Theory  
 Embodied Cognition  
@@ -27,7 +30,7 @@ Deep Learning
 
 ### Papers  
 
-
+Manuscript  [link](https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/manuscript-doc.md)
 
 ### Open Dataset  
 
