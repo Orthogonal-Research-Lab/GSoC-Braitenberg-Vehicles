@@ -27,6 +27,9 @@ Evolutionary Algorithms
 Neural Networks  
 Deep Learning  
 
+## Approaches
+Correlation matrix connectome  
+Dynamic connectome  
 
 ### Papers  
 
@@ -34,7 +37,7 @@ Manuscript  [link](https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-V
 
 ### Open Dataset  
 
-
+TBD  
 
 ### Experiments
 
