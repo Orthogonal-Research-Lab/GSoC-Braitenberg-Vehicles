@@ -35,3 +35,5 @@ May 27: Coding Period Begins!
 * check out our annotated list of connectome datasets [link](https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/tree/master/Connectome%20Datasets)
 
 * community evaluation of model: [Ziyi Gong](https://www.youtube.com/watch?v=oB8HC46GFh4), [Stefan Dvoretskii](https://www.youtube.com/watch?v=lPwONsz0P0s&t=1s)
+
+Check out Stefan Dvoretskii's final result, the BraGenBrain platform!  [link]() [tutorial presentation]()
