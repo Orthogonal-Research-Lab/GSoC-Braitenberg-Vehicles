@@ -1,11 +1,12 @@
 ## Braitenberg Vehicles as Developmental Neurosimulation
-Bradly Alicea<sup>1,2</sup>, Stefan Dvoretskii<sup>3</sup>, Ziyi Gong, Ankit Gupta, and Jesse Parent
+Bradly Alicea<sup>1,2</sup>, Stefan Dvoretskii<sup>3</sup>, Ziyi Gong<sup>4</sup>, Ankit Gupta<sup>5</sup>, and Jesse Parent<sup>6</sup>
+
+<sup>1</sup> Orthogonal Research and Education Laboratory, <sup>2</sup> OpenWorm Foundation, <sup>3</sup> Technische Universität München, <sup>4</sup> University of Pittsburgh, <sup>5</sup> IIT Kharagpur, <sup>6</sup> SUNY Albany.
 
 ### Abstract
 
 
-
-<sup>1</sup> Orthogonal Research and Education Laboratory, <sup>2</sup> OpenWorm Foundation, <sup>3</sup> Technische Universität München
+#### Keywords:
 
 ### Introduction
 How do we understand the emergence of a connected nervous system, particularly in terms of how it leads to neural function and behavior? One way is to infer the co-occurrence of neural cell differentiation in a model organism [1,2]. This requires a small connectome in which cell differentiation can be tracked. Even for organisms such as the nematode Caenorhabditis elegans [3], direct experimentation is difficult. An embodied in silico system with a generalized nervous system would provide a means to both modify the developmental process and directly observe all possible developmental outcomes. Utilizing an abstraction to study hard-to-observe questions is in fact consistent with how simulations have been used throughout the history of neuroscience [4]. We propose that Braitenberg Vehicles (BV) [5] can be used as a means to construct such simulations. Originally a thought experiment first proposed by Valentino Braitenberg, BVs are embodied model of a simple nervous system. The basic architecture not only allows us to embody a connectome, but also to model its behavioral outputs. It is of note that Braitenberg’s aim was to imagine how simple behaviors can emerge from hard-wired nervous systems and phenotypes. Our approach differs in that we allow nervous systems to develop using a variety of techniques. We will introduce a general computational model, followed by specific instantiations involving different aspects of cognition. 
