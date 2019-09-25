@@ -1,5 +1,5 @@
 ## Braitenberg Vehicles as Developmental Neurosimulation
-Bradly Alicea, Stefan Dvoretskii, Ziyi Gong, Ankit Gupta, and Jesse Parent
+Bradly Alicea<sup>1</sup>, Stefan Dvoretskii, Ziyi Gong, Ankit Gupta, and Jesse Parent
 
 ### Abstract
 
