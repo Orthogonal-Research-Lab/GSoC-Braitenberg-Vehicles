@@ -37,3 +37,5 @@ May 27: Coding Period Begins!
 * community evaluation of model: [Ziyi Gong](https://www.youtube.com/watch?v=oB8HC46GFh4), [Stefan Dvoretskii](https://www.youtube.com/watch?v=lPwONsz0P0s&t=1s)
 
 Check out Stefan Dvoretskii's final result, the BraGenBrain platform!  [link](https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/tree/master/Stefan) [tutorial presentation](https://www.youtube.com/watch?v=O4nRaIZrGeI&t=2s)
+
+Check out the successor meeting series, [Saturday Morning Neuro-Sim](https://www.youtube.com/playlist?list=PL4RJ4xCetB63f4DkdrrysVZr5LlVzmfF8)!
