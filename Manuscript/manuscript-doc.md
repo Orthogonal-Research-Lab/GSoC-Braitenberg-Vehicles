@@ -1,3 +1,5 @@
+_Please install [MathJax Plugin for Github](https://chrome.google.com/webstore/detail/mathjax-plugin-for-github/ioemnmodlmafdkllaclgeombjnmnbima/related) or [Math Anywhere](https://chrome.google.com/webstore/detail/math-anywhere/gebhifiddmaaeecbaiemfpejghjdjmhc) Chrome plug-ins to view equations_  
+
 ## Braitenberg Vehicles as Developmental Neurosimulation
 Bradly Alicea<sup>1,2</sup>, Stefan Dvoretskii<sup>3</sup>, Ziyi Gong<sup>4</sup>, Ankit Gupta<sup>5</sup>, and Jesse Parent<sup>6</sup>
 
@@ -44,7 +46,7 @@ Learning functions for Hebbian Algorithm. The learning rate should be properly s
 
 Moreover, a depression function
 
-$$\DeltaW_ij = \phi/50 W^2_ij I_j + 1$$
+$${\DeltaW_ij} = {\phi}/ 50 {W^2_ij}{I_j} + 1}\tag{1}$$
 
 that naively imitates activity-dependent long-term depression is used to cancel the effect of repeatedly learning from one stimulus source and noisy data. Its effect was demonstrated through static testing where the BV does not move and stimuli are presented without priming, yet not demonstrated in the actual simulation. The associative memory is implemented as a bidirectional associative memory model in Layers.BAM class.
 
@@ -65,22 +67,25 @@ __Modeling Neural Plasticity using Multisensory Inputs.__ This instantiation is 
 
 During its exploration, the BV associates taste with smell when both taste and smell information are available. When there is no taste, it recalls the taste based on its associative memory and the smell received. Tastes are both sensed and recalled, which can produce preference that affects the BV's movement. When the BV becomes more and more mature via association, it can exhibit avoidance and preference behaviors, in a manner similar to small animals. An example of the simulation is shown in Figure 1.
 
+<p align="center">
+  <img width="617" height="172" src="https://user-images.githubusercontent.com/19001437/53520874-552f8e80-3a9c-11e9-91c1-2ae61fc9fac8.jpg"><BR>
+  __Figure 1.__ An example of real-time animation. Experiments are conducted using an iPython Jupyter Notebook.
+</p>
 
-
-
-__Figure 1.__ An example of real-time animation. Experiments are conducted using an iPython Jupyter Notebook.
 
 _Environment._ The environment is realistic that olfactory stimuli decay with distances exponentially from their sources, while gustatory stimuli are sensible only when the BV is within gustatory boundaries of those stimuli. The mapping between olfactory attributes and gustatory attributes should be defined before initializing Space.Space class and Simulation class. These outputs can be represented using an odor space and a taste space, respectively (Figure 2).
 
-
-
-__Figure 2.__ Odor space [20] of one olfactory attribute (left) and taste space of one gustatory attribute (right).
+<p align="center">
+  <img width="617" height="172" src="https://user-images.githubusercontent.com/19001437/53520874-552f8e80-3a9c-11e9-91c1-2ae61fc9fac8.jpg"><BR>
+  __Figure 2.__ Odor space [20] of one olfactory attribute (left) and taste space of one gustatory attribute (right).
+</p>
 
 _Olfactory System._ The olfactory system, is implemented as a type of Li-Hopfield network [21], which is used as a standard model of olfactory bulb function (Figure 3). Li-Hopfield networks model the dynamics of two important cells in olfactory bulb: mitral cells and granule cells. Mitral cells take in relayed sensory information from receptor cells and glomeruli as input, and produce appropriate outputs to other parts of the brain [22]. Meanwhile, granule cells serve as inhibitors of mitral cell activity [23]. In a biological context, the ratio of granule cells than mitral cells is high. In this model, however, there are equal numbers of each.
 
-
-
-__Figure 3.__ Li-Hopfield-inspired model of the olfactory bulb. The grey dots are the mitral cells and the black are the granule cells. Red means excitation and blue means inhibition.
+<p align="center">
+  <img width="617" height="172" src="https://user-images.githubusercontent.com/19001437/53520874-552f8e80-3a9c-11e9-91c1-2ae61fc9fac8.jpg"><BR>
+  __Figure 3.__ Li-Hopfield-inspired model of the olfactory bulb. The grey dots are the mitral cells and the black are the granule cells. Red means excitation and blue means inhibition.
+</p>
 
 The Li-Hopfield network has been characterized as a group of coupled nonlinear oscillators [24]. In short, it is able to alter its oscillatory frequencies based on changes in olfactory attributes, so it is important to "filter" the noise and identify which stimulus source the BV is approaching. The signal powers of the output are then calculated, instead of modeling a complex afferent nerve in real nervous system. The olfactory system is implemented in Layers.LiHopfield class.
 
@@ -88,9 +93,10 @@ _Gustatory System._ In this model, the gustatory system is only a single layer o
 
 _Associative Memory._ The associative memory, implemented as a bidirectional associative memory (BAM), is how Hebbian learning is represented in this model (Figure 4). Rather than Hebbian rule that BAM often utilized, a Generalized Hebbian algorithm (GHA) is used, for it is demonstrably stable. The learning rate converges to zero with a constant rate to ensure the stability of GHA.
 
-
-
-__Figure 4.__ An example of a bidirectional associative memory (BAM) network. Nodes on the left are input cells, and the nodes on the right are output cells.
+<p align="center">
+  <img width="617" height="172" src="https://user-images.githubusercontent.com/19001437/53520874-552f8e80-3a9c-11e9-91c1-2ae61fc9fac8.jpg"><BR>
+  __Figure 4.__ An example of a bidirectional associative memory (BAM) network. Nodes on the left are input cells, and the nodes on the right are output cells.
+</p>
 
 _Motor Unit._ The motor unit is radian-based. The BV moves along the heading direction whose value is in [-, ]. When the increase in preference passes a threshold, the BV moves forward with a little offset based on the increase; when the decrease in preference passes the threshold, the BV moves backward with a little offset based on the decrease. Otherwise, it moves towards a nearby source. The motor unit is implemented in Movement.RadMotor class. Because the learning rate of GHA has to decrease to ensure stability, the motor unit is equipped with memory to avoid repeated back-and-forth movement near the gustatory boundary of a “good” sample, which could easily lead to overfitting.
 
