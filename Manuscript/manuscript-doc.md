@@ -46,7 +46,7 @@ Learning functions for Hebbian Algorithm. The learning rate should be properly s
 
 Moreover, a depression function
 
-$${\Delta}{W_ij} = {\dfrac{\phi} {50 {W^2_ij}{I_j} + 1} \tag{1}$$
+$${\Delta}{W_ij} = {\dfrac{\phi} {50 {W^2_ij}{I_j} + 1}} \tag{1}$$
 
 that naively imitates activity-dependent long-term depression is used to cancel the effect of repeatedly learning from one stimulus source and noisy data. Its effect was demonstrated through static testing where the BV does not move and stimuli are presented without priming, yet not demonstrated in the actual simulation. The associative memory is implemented as a bidirectional associative memory model in Layers.BAM class.
 
@@ -68,7 +68,7 @@ __Modeling Neural Plasticity using Multisensory Inputs.__ This instantiation is 
 During its exploration, the BV associates taste with smell when both taste and smell information are available. When there is no taste, it recalls the taste based on its associative memory and the smell received. Tastes are both sensed and recalled, which can produce preference that affects the BV's movement. When the BV becomes more and more mature via association, it can exhibit avoidance and preference behaviors, in a manner similar to small animals. An example of the simulation is shown in Figure 1.
 
 <p align="center">
-  <img width="550" height="450" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-4.png"><BR>
+  <img width="600" height="300" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-4.png"><BR>
   Figure 1. An example of real-time animation. Experiments are conducted using an iPython Jupyter Notebook.
 </p>
  
