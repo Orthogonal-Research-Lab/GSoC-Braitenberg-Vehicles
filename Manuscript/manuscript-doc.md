@@ -46,7 +46,7 @@ Learning functions for Hebbian Algorithm. The learning rate should be properly s
 
 Moreover, a depression function
 
-$${\Delta}{W_ij} = {\phi}/ 50 {W^2_ij}{I_j} + 1 \tag{1}$$
+$${\Delta}{W_ij} = {\dfrac{\phi} {50 {W^2_ij}{I_j} + 1} \tag{1}$$
 
 that naively imitates activity-dependent long-term depression is used to cancel the effect of repeatedly learning from one stimulus source and noisy data. Its effect was demonstrated through static testing where the BV does not move and stimuli are presented without priming, yet not demonstrated in the actual simulation. The associative memory is implemented as a bidirectional associative memory model in Layers.BAM class.
 
@@ -68,21 +68,21 @@ __Modeling Neural Plasticity using Multisensory Inputs.__ This instantiation is 
 During its exploration, the BV associates taste with smell when both taste and smell information are available. When there is no taste, it recalls the taste based on its associative memory and the smell received. Tastes are both sensed and recalled, which can produce preference that affects the BV's movement. When the BV becomes more and more mature via association, it can exhibit avoidance and preference behaviors, in a manner similar to small animals. An example of the simulation is shown in Figure 1.
 
 <p align="center">
-  <img width="617" height="172" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-4.png"><BR>
+  <img width="550" height="450" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-4.png"><BR>
   Figure 1. An example of real-time animation. Experiments are conducted using an iPython Jupyter Notebook.
 </p>
  
 _Environment._ The environment is realistic that olfactory stimuli decay with distances exponentially from their sources, while gustatory stimuli are sensible only when the BV is within gustatory boundaries of those stimuli. The mapping between olfactory attributes and gustatory attributes should be defined before initializing Space.Space class and Simulation class. These outputs can be represented using an odor space and a taste space, respectively (Figure 2).
 
 <p align="center">
-  <img width="707" height="645" src=https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-3-left.png"><img width="694" height="645" src=https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-3-right.png"><BR>
+  <img width="345" height="323" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-3-left.png"><img width="345" height="323" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-3-right.png"><BR>
   Figure 2. Odor space [20] of one olfactory attribute (left) and taste space of one gustatory attribute (right).
 </p>
 
 _Olfactory System._ The olfactory system, is implemented as a type of Li-Hopfield network [21], which is used as a standard model of olfactory bulb function (Figure 3). Li-Hopfield networks model the dynamics of two important cells in olfactory bulb: mitral cells and granule cells. Mitral cells take in relayed sensory information from receptor cells and glomeruli as input, and produce appropriate outputs to other parts of the brain [22]. Meanwhile, granule cells serve as inhibitors of mitral cell activity [23]. In a biological context, the ratio of granule cells than mitral cells is high. In this model, however, there are equal numbers of each.
 
 <p align="center">
-  <img width="617" height="172" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-1.png"><BR>
+  <img width="450" height="450" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-1.png"><BR>
   Figure 3. Li-Hopfield-inspired model of the olfactory bulb. The grey dots are the mitral cells and the black are the granule cells. Red means excitation and blue means inhibition.
 </p>
 
@@ -93,7 +93,7 @@ _Gustatory System._ In this model, the gustatory system is only a single layer o
 _Associative Memory._ The associative memory, implemented as a bidirectional associative memory (BAM), is how Hebbian learning is represented in this model (Figure 4). Rather than Hebbian rule that BAM often utilized, a Generalized Hebbian algorithm (GHA) is used, for it is demonstrably stable. The learning rate converges to zero with a constant rate to ensure the stability of GHA.
 
 <p align="center">
-  <img width="707" height="645" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-2.png"><BR>
+  <img width="450 height="450" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-2.png"><BR>
   Figure 4. An example of a bidirectional associative memory (BAM) network. Nodes on the left are input cells, and the nodes on the right are output cells.
 </p>
 
