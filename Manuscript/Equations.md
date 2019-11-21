@@ -13,7 +13,7 @@ $$\begin{aligned}
  
 **Bidirectional Associate Memory Using Generalized Hebbian Algorithm with Depression**  
 $$\begin{aligned} 
-&\frac{\mathrm{d} W}{\mathrm{d} t} = \eta_t  (I'_o I_g^T - W \Gamma(I'_oI_g^T)) - D\\
+&\frac{\mathrm{d} W}{\mathrm{d} t} = \eta_t  I'_o I_g^T - W \Gamma(I'_oI_g^T)  - D\\
 &D_{ij} = \frac{\phi}{I'_{o,j}W^2_{ij}+1}\\
 &\lim_{t\rightarrow \infin} \eta_t = 0\\
 &\lim_{t\rightarrow \infin} \sum_t \eta_t = \infin
