@@ -15,8 +15,8 @@ $$\begin{aligned}
 $$\begin{aligned} 
 &\frac{\mathrm{d} W}{\mathrm{d} t} = \eta_t  I_o' I_{g^T} - W \Gamma(I_o' I_g^T) - D \\
 &\{D_ij} = \frac{\phi}{I_{o,j}'W^2_{ij}+1}\\
-&\lim_{t\rightarrow \infin} \eta_t = 0\\
-&\lim_{t\rightarrow \infin} \sum_t \eta_t = \infin
+&\lim_{t\rightarrow \infty} \eta_t = 0\\
+&\lim_{t\rightarrow \infty} \sum_t \eta_t = \infty
 \end{aligned}  \tag{4}$$
 
 where $W$ is the association between $I_o'$, the processed olfactory input, and $I_g$, punished by the depression matrix $D$ with a depression rate $\phi$. $D_{ij} \mapsto 0$ if the denominator of $D_{ij}$ is zero.  
