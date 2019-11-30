@@ -13,7 +13,7 @@ $$\begin{aligned}
  
 **Bidirectional Associate Memory Using Generalized Hebbian Algorithm with Depression**  
 $$\begin{aligned} 
-&\frac{\mathrm{d} W}{\mathrm{d} t} = \eta_t  I_o' I_{g^T} - W \Gamma(I_o' I_g^T)  - D\\
+&\frac{\mathrm{d} W}{\mathrm{d} t} = \eta_t  I_o' I_{g^T} - W \Gamma(I_o' I_g^T) - D \\
 &\D_{ij} = \frac{\phi}{I_{o,j}'W^2_{ij}+1}\\
 &\lim_{t\rightarrow \infin} \eta_t = 0\\
 &\lim_{t\rightarrow \infin} \sum_t \eta_t = \infin
@@ -22,5 +22,6 @@ $$\begin{aligned}
 where $W$ is the association between $I_o'$, the processed olfactory input, and $I_g$, punished by the depression matrix $D$ with a depression rate $\phi$. $D_{ij} \mapsto 0$ if the denominator of $D_{ij}$ is zero.  
 
 **Simple Judgement Unit**  
-$$p = \sum_i J_i(I'_{g,i})$$
+$$p = \sum_i J_i(I'_{g,i}) \tag{5}$$  
+
 where $p$ is the preference from the summation of different judgement $J$ on recalled taste $I_g'$. If there is no recalled taste and real taste exists, $I'_g = I_g$.
