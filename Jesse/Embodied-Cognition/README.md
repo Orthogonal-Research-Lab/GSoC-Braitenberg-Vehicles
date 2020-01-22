@@ -28,7 +28,7 @@ See also: [Orthogonal Lab's collection of Knowledge Maps for Cognitive Science](
 
 
 ## Online Resources / Courses 
-["Mind and Machine" Coursera Specialization](https://www.coursera.org/specializations/mind-machine)
-
-[MecLab - Morphology, Evolution & Cognition](https://www.meclab.org/about-video) - University of Vermont, PI Josh Bongard
+[MecLab - Morphology, Evolution & Cognition](https://www.meclab.org/about-video) - Josh Bongard, University of Vermont
 * Online course: [r/Ludobots - Education in Evolutionary Robotics](https://www.reddit.com/r/ludobots/)
+
+["Mind and Machine"](https://www.coursera.org/specializations/mind-machine) Coursera Specialization -  David Quigley, Colorado Univesrity
