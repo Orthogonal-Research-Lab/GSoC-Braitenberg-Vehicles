@@ -20,9 +20,15 @@ See also: [Orthogonal Lab's collection of Knowledge Maps for Cognitive Science](
 - Radical embodied cognitive science as an approach emphasizes the relationship between body and the environment or ecosystem. Often perceived as being relevant to motor behavior and other "lower" cognitive functions, it is nevertheless an approach that also addresses the full range of psychosocial activity, including the experience, mindset, interactions or other "higher" functions. The Research Topic will bring together examples of theoretical and empirical research which illustrate how radical embodied cognitive science casts new light on questions of traditionally "higher" functions, or directly challenges traditional conceptualizations of those functions. 
 
 
+
+
+
 [Embodied Cognition With and Without Mental Representations: The Case of Embodied Choices in Sports](https://www.frontiersin.org/articles/10.3389/fpsyg.2019.01825/full)
 - "In this conceptual analysis contribution to the special issue on radical embodied cognition, we discuss how embodied cognition can exist with and without representations. We explore this concept through the lens of judgment and decision-making in sports (JDMS). Embodied cognition has featured in many investigations of human behavior, but no single approach has emerged. Indeed, the very definitions of the concepts “embodiment” and “cognition” lack consensus, and consequently the degree of “radicalism” is not universally defined, either. In this paper, we address JDMS not from a rigid theoretical perspective but from two embodied cognition approaches: one that assumes there is mediation between the athlete and the environment through mental representation, and another that assumes direct contact between the athlete and the environment and thus no need for mental representation. Importantly, our aim was not to arrive at a theoretical consensus or set up a competition between approaches but rather to provide a legitimate scientific discussion about how to explain empirical results in JDMS from contrasting perspectives within embodied cognition."
 
 
-## Online Resources / Realted Courses 
+## Online Resources / Courses 
 ["Mind and Machine" Coursera Specialization](https://www.coursera.org/specializations/mind-machine)
+
+[MecLab - Morphology, Evolution & Cognition](https://www.meclab.org/about-video) - University of Vermont, PI Josh Bongard
+* Online course: [r/Ludobots - Education in Evolutionary Robotics](https://www.reddit.com/r/ludobots/)
