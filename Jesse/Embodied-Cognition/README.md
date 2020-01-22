@@ -7,7 +7,7 @@ A general overview: [Embodied Cognition via Stanford Encyclopedia of Philosophy]
 
 - Relatively recent work on the embodiment of cognition provides much food for thought for empirically-informed philosophers of mind. This is in part because of the rich range of phenomena that embodied cognitive science has studied. But it is also in part because those phenomena are often thought to challenge dominant views of the mind, such as the computational and representational theories of mind, at the heart of traditional cognitive science. And they have sometimes been taken to undermine standard positions in the philosophy of mind, such as the idea that the mind is identical to, or even realized in, the brain.
 
-
+See also: [Orthogonal Lab's collection of Knowledge Maps for Cognitive Science](https://github.com/Orthogonal-Research-Lab/Knowledge-Maps/tree/master/Cognitive%20Science)
 
 ## Papers
 [Embodied Cognition With and Without Mental Representations: The Case of Embodied Choices in Sports](https://www.frontiersin.org/articles/10.3389/fpsyg.2019.01825/full)
