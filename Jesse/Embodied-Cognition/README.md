@@ -1,7 +1,7 @@
 # Intro to Embodied Cognition
 Embodied Cognition has come up as a theme in our Braitenber Vehicle Project. This folder will house a collection of relevant resources for Embodied Cognition (EC)
 
-A general overview: [Embodied Cognition via Stanford Encyclopedia of Philosophy](https://plato.stanford.edu/entries/embodied-cognition/):
+A general overview - [Embodied Cognition via Stanford Encyclopedia of Philosophy](https://plato.stanford.edu/entries/embodied-cognition/):
 
 - In general, dominant views in the philosophy of mind and cognitive science have considered the body as peripheral to understanding the nature of mind and cognition. Proponents of embodied cognitive science view this as a serious mistake. Sometimes the nature of the dependence of cognition on the body is quite unexpected, and suggests new ways of conceptualizing and exploring the mechanics of cognitive processing.
 
