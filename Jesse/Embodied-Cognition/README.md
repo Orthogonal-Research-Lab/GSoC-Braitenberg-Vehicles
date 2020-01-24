@@ -32,3 +32,5 @@ See also: [Orthogonal Lab's collection of Knowledge Maps for Cognitive Science](
 * Online course: [r/Ludobots - Education in Evolutionary Robotics](https://www.reddit.com/r/ludobots/)
 
 ["Mind and Machine"](https://www.coursera.org/specializations/mind-machine) Coursera Specialization -  David Quigley, Colorado Univesrity
+
+[Karl Friston on Embodied Cognition](https://www.youtube.com/watch?v=HW0JnjgCO3o) - YouTube 
