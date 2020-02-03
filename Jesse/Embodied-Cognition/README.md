@@ -13,6 +13,9 @@ A general overview - [Embodied Cognition via Stanford Encyclopedia of Philosophy
 See also: [Orthogonal Lab's collection of Knowledge Maps for Cognitive Science](https://github.com/Orthogonal-Research-Lab/Knowledge-Maps/tree/master/Cognitive%20Science)
 
 
+## Braitenberg Vehicles and Embodied Cognition
+Radical Embodied Cognition: Braintberg's original vehicles as non-representational 'cognitive actors'
+
 
 ## Papers and Collections
 ["Radical Embodied Cognitive Science of Human Behavior: Skill Acquisition, Expertise and Talent Development" FrontiersIn - Resaerch Topic & Article Collection](https://www.frontiersin.org/research-topics/9049/radical-embodied-cognitive-science-of-human-behavior-skill-acquisition-expertise-and-talent-developm#overview)
