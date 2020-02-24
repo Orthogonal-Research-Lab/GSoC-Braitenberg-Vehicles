@@ -78,6 +78,7 @@ class Vehicle {
 	}                                                             
 }                                                                     
 ------
+      
 
 Moreover, a depression function
 
