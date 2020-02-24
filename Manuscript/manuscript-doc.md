@@ -57,12 +57,35 @@ Developmental BVs give us a unique opportunity: Braitenberg’s original concept
 #### Generalized Models of Regulation
 Our approach relies upon several models of regulation that may also play a role in emergent nervous systems that interact with their environments. Our software instantiations present at least two: behavioral reinforcement and Hebbian learning. Behavioral reinforcement is most famously characterized through reinforcement learning techniques [39], but the core mechanism itself can be implemented using a host of other techniques [40]. For example, Hebbian learning is the dictum that “neurons that fire together, wire together” [41]. The co-occurence of particular neural units can produce spontaneous and adaptive behaviors depending on the context. Another example comes from the implementation of genetic algorithms, where fitness functions can serve to reinforce adaptive behaviors through hill-climbing on a fitness landscape [42]. More generally, our approaches involve a mechanism that allows for some form of adaptive feedback. Even in lower-capacity cognitive agents, a greater ability to model environmental conditions or interpret sensory-motor input may lend towards these agents developing into so-called good regulators [43]. This can be achieved through regulatory mechanisms for a single agent, or regulation of behaviors across multiple agents.
 
-
 ### Methods
+This section presents the methods used to develop the software instantiations presented in the Results section. These include descriptions of software packages, and mathematical formalisms that describe each approach to our common problem.
 
-#### Modeling Neural Plasticity using Multisensory Inputs
+#### BraGenBrain
+The BraGenBrain approach utilizes a BV-genetic algorithm hybrid approach to produce adjacency matrices representing small connectomes. The use of operators such as crossover, mutation, and selection are used to introduce developmental plasticity, while the best performing developmental trajectories are discovered using natural selection. As the BV agents move around and interact in a sandbox simulation, agents develop both implicit (nervous system) as well as explicit (behavior) features. 
 
-Learning functions for Hebbian Algorithm. The learning rate should be properly set and converge to zero for accuracy, but in this simulation it is a small constant, because this learning process, unlike typical machine learning with neural networks where samples are learned one by one, occurs in a space where samples are mixed and the time required to learn from each sample is unknown (so are the orders of learning samples). In addition, each sample can be revisited, either immediately or after the Braitenberg vehicle visits some other samples. It is hard to determine the initial learning rate and control the converging pace. It is also hard to avoid the effect of initial conditions if the convergence is introduced.
+Environment and body. The BraGenBrain environment is a n-dimensional “box” of predefined size in pixels (which makes the suite screen size-independent) with so-called “world objects” across which the agents move. At the moment of writing, we have only conducted experiments in a two-dimensional space with one type of world objects defined as perfect circles of equal size. Yet extension of the program to additional dimensions is possible. An agent body incorporates many of the classic BV elements [5]. These include a body core, sensors that receive signals from world objects (the nature of these signals is defined later) as well as motors that move the whole body, that is body core, sensors and motors themselves based on the signal received by sensors (that is, sensors and motors are interconnected). Currently, we have conducted experiments with body of pre-defined “primitive Braitenberg” (rectangular) shape with sensors and motors circles small enough to mind them little in calculations, however the agent class (Vehicle) was supplied with a companion factory
+
+__Table 1__. Constructing a vehicle in the BraGenBrain environment.
+                                                                      |
+class Vehicle {                                                       |
+	//internal vehicle fields and methods                         |
+	...                                                           |
+	companion object Factory {                                    |
+		...                                                   |
+		fun simpleBVVehicle(...) : Vehicle {...}              |
+		//other vehicle-producing functions                   |
+		...                                                   |
+	}                                                             |
+}                                                                     |
+----------------------------------------------------------------------|
+
+
+
+
+
+
+
+
 
 Moreover, a depression function
 
