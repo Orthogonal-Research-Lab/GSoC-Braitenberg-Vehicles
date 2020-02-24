@@ -66,26 +66,18 @@ The BraGenBrain approach utilizes a BV-genetic algorithm hybrid approach to prod
 Environment and body. The BraGenBrain environment is a n-dimensional “box” of predefined size in pixels (which makes the suite screen size-independent) with so-called “world objects” across which the agents move. At the moment of writing, we have only conducted experiments in a two-dimensional space with one type of world objects defined as perfect circles of equal size. Yet extension of the program to additional dimensions is possible. An agent body incorporates many of the classic BV elements [5]. These include a body core, sensors that receive signals from world objects (the nature of these signals is defined later) as well as motors that move the whole body, that is body core, sensors and motors themselves based on the signal received by sensors (that is, sensors and motors are interconnected). Currently, we have conducted experiments with body of pre-defined “primitive Braitenberg” (rectangular) shape with sensors and motors circles small enough to mind them little in calculations, however the agent class (Vehicle) was supplied with a companion factory
 
 __Table 1__. Constructing a vehicle in the BraGenBrain environment.
-                                                                      |
-class Vehicle {                                                       |
-	//internal vehicle fields and methods                         |
-	...                                                           |
-	companion object Factory {                                    |
-		...                                                   |
-		fun simpleBVVehicle(...) : Vehicle {...}              |
-		//other vehicle-producing functions                   |
-		...                                                   |
-	}                                                             |
-}                                                                     |
-----------------------------------------------------------------------|
-
-
-
-
-
-
-
-
+------
+class Vehicle {                                                       
+	//internal vehicle fields and methods
+	...           
+	companion object Factory {
+		...                                                  
+		fun simpleBVVehicle(...) : Vehicle {...}              
+		//other vehicle-producing functions                   
+		...                                                   
+	}                                                             
+}                                                                     
+------
 
 Moreover, a depression function
 
