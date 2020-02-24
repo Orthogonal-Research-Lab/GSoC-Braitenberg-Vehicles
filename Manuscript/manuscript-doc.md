@@ -258,67 +258,47 @@ Moving | 4a | Instinct | Inhibitory/Excitatory |
 Fixed | 4b | Decision-making | Inhibitory/Excitatory |
 Moving | 4b | Decision-making | Inhibitory/Excitatory |
 
-
-
-
-
-
-
-
-
-
-
- 
-_Environment._ The environment is realistic that olfactory stimuli decay with distances exponentially from their sources, while gustatory stimuli are sensible only when the BV is within gustatory boundaries of those stimuli. The mapping between olfactory attributes and gustatory attributes should be defined before initializing Space.Space class and Simulation class. These outputs can be represented using an odor space and a taste space, respectively (Figure 2).
-
-<p align="center">
-  <img width="345" height="323" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-3-left.png"><img width="345" height="323" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-3-right.png"><BR>
-  Figure 2. Odor space [20] of one olfactory attribute (left) and taste space of one gustatory attribute (right).
-</p>
-
-_Olfactory System._ The olfactory system, is implemented as a type of Li-Hopfield network [21], which is used as a standard model of olfactory bulb function (Figure 3). Li-Hopfield networks model the dynamics of two important cells in olfactory bulb: mitral cells and granule cells. Mitral cells take in relayed sensory information from receptor cells and glomeruli as input, and produce appropriate outputs to other parts of the brain [22]. Meanwhile, granule cells serve as inhibitors of mitral cell activity [23]. In a biological context, the ratio of granule cells than mitral cells is high. In this model, however, there are equal numbers of each.
-
-<p align="center">
-  <img width="450" height="450" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-1.png"><BR>
-  Figure 3. Li-Hopfield-inspired model of the olfactory bulb. The grey dots are the mitral cells and the black are the granule cells. Red means excitation and blue means inhibition.
-</p>
-
-The Li-Hopfield network has been characterized as a group of coupled nonlinear oscillators [24]. In short, it is able to alter its oscillatory frequencies based on changes in olfactory attributes, so it is important to "filter" the noise and identify which stimulus source the BV is approaching. The signal powers of the output are then calculated, instead of modeling a complex afferent nerve in real nervous system. The olfactory system is implemented in Layers.LiHopfield class.
-
-_Gustatory System._ In this model, the gustatory system is only a single layer of cells, for taste is simply an "impression" in this simulation. There is no noise involved in taste [25], or any other perturbation, so further processing of taste is redundant [26]. The gustatory system is implemented in Layers.Single class.
-
-_Associative Memory._ The associative memory, implemented as a bidirectional associative memory (BAM), is how Hebbian learning is represented in this model (Figure 4). Rather than Hebbian rule that BAM often utilized, a Generalized Hebbian algorithm (GHA) is used, for it is demonstrably stable. The learning rate converges to zero with a constant rate to ensure the stability of GHA.
-
-<p align="center">
-  <img width="450 height="450" src="https://github.com/Orthogonal-Research-Lab/GSoC-Braitenberg-Vehicles/blob/master/Manuscript/fig-2.png"><BR>
-  Figure 4. An example of a bidirectional associative memory (BAM) network. Nodes on the left are input cells, and the nodes on the right are output cells.
-</p>
-
-_Motor Unit._ The motor unit is radian-based. The BV moves along the heading direction whose value is in [-, ]. When the increase in preference passes a threshold, the BV moves forward with a little offset based on the increase; when the decrease in preference passes the threshold, the BV moves backward with a little offset based on the decrease. Otherwise, it moves towards a nearby source. The motor unit is implemented in Movement.RadMotor class. Because the learning rate of GHA has to decrease to ensure stability, the motor unit is equipped with memory to avoid repeated back-and-forth movement near the gustatory boundary of a “good” sample, which could easily lead to overfitting.
-
-_Judgement Unit._ An array of preference function should be defined before initializing Simulation class. The preference, the output of the judgement unit, is the sum of the output of each preference functions applied to their corresponding gustatory attributes. The judgement unit is incorporated in Simulation class.
-
-
-__BVs as a Deep Learning/Swarm model.__
+__Vehicle Kinematics.__ In terms of BV vehicle kinematics for this instantiation, we find that the only thing responsible for their movement is the rotation speed of the two wheels and the difference between them. More specifically, the difference in the rotation speed of the wheels is mainly responsible for deflection from its otherwise straight-line trajectory. So, depending upon the activation received at the wheel rotators and their difference, a resultant vehicle movement is rendered. As evident from the simulation, one of the major takeaways could be using the Braitenberg Vehicles as intelligent swarms. Also, the simulations can be used to predict/optimize paths given different kinds of stimuli.
 
 ### Discussion and Future Plans
 
-Modeling Neural Plasticity using Multisensory Inputs. Future Plan. Put the trained BV in a new, testing environment, like conducting tests in animal models. Implement the progress saving functionality.
+### Discussion
+We have introduced the broader context of Braitenberg vehicles in modeling developmental processes, in addition to the application of connectionist models to understand how neural systems and behaviors are generated in development. The model instantiations presented here can be understood as large-scale models of small connectomes. Yet our three instantiations intimately tie models to behavior. To address the concerns of Eliasmith and Trujillo  [53], our instantiations provide a diverse range of mechanisms that complement behaviors that emerge out of developmental processes. These mechanisms range from generalized learning and adaptation to collective behavior stemming from a population of fully hard-wired nervous system. More sophisticated substrate mechanisms will be covered by use cases presented in the next section.  
 
+Each of the instantiations presented here are ripe for future development. As open source projects, they provide a basis for future development by the broader neural simulation community. Aside from additional functionality, these software instantiations would benefit from rigorous experimental testing. For example, experiments that demonstrate the functional range and evolvability of such models could be used for further development as well as application to basic research questions concerning brain development.  
 
+__Feedback, Regulation, and Emergence.__ The brain and behavior of a single agent involves a coupling between biological structures and the environment. Developmental processes are dependent on ecological context and action [54]. Action itself (in the form of body movement) is a source of information. In fact, using action as a basis for cognition gets us around the need for a perfect internal representation, as the agent will dynamically extract information from the environment [55]. Revisiting our review of how embodied cognition is relevant to BVs, it is worth noting that agents that use minimal representation and embodied context to achieve cognitive-like behaviors also create a basis for representational structures (e.g. higher-order cognition) that produce more complex behaviors [34].   
 
-#### Use cases
+We also explore emergent phenomena at two scales of biological organization: the biological connectome within an agent and collective behavior among a population of agents. While they result in different types of behavioral outcomes, the emergence of behaviors involves similar features that tend to be scale-invariant [56]. The first feature involves a generic form of adaptive behavior. There is a common thread between algorithmic optimization, Hebbian learning, and the mean behavior of vehicle collectives which makes all of these models exhibit interesting behavioral properties. This leads to the second feature, that of developmental contingency [57]. Each of these models relies upon sequential information that result from ever-greater amounts of interaction with the environment. Our software instantiations create developmental trajectories (either in terms of brain connectivity or group behavior) that are both unique across simulation runs and understandable through analysis. This suggests that a third and final common feature is a delineation between nature and nurture. While it is unusual to speak of either in digital simulations, we can use our software instantiations to understand the potential roles of biological innateness, environmental-induced plasticity, or the interaction of both on model phenotypes.  
 
+#### Use Cases
+Building on the need to create a basis for representational structures, we can create so-called use cases to demonstrate the ways developmental BVs can be applied to hypothetical behavioral contexts. In this paper, a use case can be thought of as a specialized research question that matches the functionality of one of our software implementations. Here we offer three: behavioral-neural hinges, optimized spatial cognition, and cumulative classification.
 
-Possible Implementation for modeling neural plasticity using multisensory inputs include more complex senses or more than two senses. More than 1 BV and BVs interactions. Another possible solution: apply genetic algorithm or other kinds to optimize the network structure.
+__A Hinge Connecting Behavioral and Neural Models.__ We have already discussed the various theoretical constructs that exist to represent neurophysiological or neuro-cognitive phenomena. Such models have been used to better understand small circuits, higher-order cognition, or phenomena such as noise and plasticity [58, 59]. On the other hand, empirical observations of animal behaviors such as predation, mating, social interaction, or puzzle solving are often model-agnostic. Therefore, we need an approach that connects models and empirical observations, and propose that models such as developmental BVs serve this purpose. We further propose that this approach acts as a hinge between biology and computation: while artificial intelligence techniques such as deep learning networks are able to generate complex behaviors [60], it is far from clear whether those behaviors are realistic. Furthermore, analytical techniques and metrics can be used to describe behaviors [61], but not create generative representations of all possible behaviors.
 
+This relationship between models and empirical observation can be made concrete by combining our multimodal integration simulation with a meta-analysis of animal experiments focused on the mechanisms our simulation seeks to approximate. For example, in the case of neural plasticity, we might investigate multisensory inputs that include more than two senses, or perhaps multisensory integration [62] over long periods of time. Another means to implement a hinge would be to explore behaviors across the range of biological diversity using genetic algorithmic approach. 
+
+__Optimized Spatial Cognition.__ We can use the BraGenBrain platform as a means to study spatial cognition in unique ways. One possible approach involves using a population of BV agents to produce optimal solutions to the Traveling Salesman Problem (TSP) [63]. Our version of the TSP [64] requires an agent to find an optimal path to visit a series of locations in a region of space. This optimization process is driven through the presentation of stimuli along a network of travel paths. The most efficient components of the route are selected for by the genetic algorithm,  which subsequently results in reorganization of the connectivity matrix. This potentially allows for an optimal solution to TSP in a much quicker fashion than other algorithms.  
+
+The TSP is usually characterized as a combinatorial optimization problem, where the optimal path involves visiting every location only once. Yet as a cognitive problem, this requires an agent to construct a global spatial map that can be integrated over a number of iterations. Humans can solve this problem using a number of cognitive heuristics [65], but a small-scale, developing nervous system can demonstrate how these strategies are synthesized. In the BraGenBrain implementation, we can use a fitness-based performance heuristic: paths with shorter distances can be assigned a higher fitness, which enforce efficient global solutions. 
+
+__Cumulative Classification.__ While the behaviors exhibited by the BV collectives approach appear to be emergent, they do not rely upon explicit forms of coordination (communication) between agents. Instead, their behavior can be classified as cumulative. Cumulative behavior can be defined in terms of common locations that serve to homogenize behavior of many individuals. While such behaviors can be asynchronous and uncoordinated, they also result in the formation of emergent structures. One could propose a deep learning application that allows for many agents with a specific neurobehavioral configuration to converge upon a single answer. In this application, a set of stimuli are generated using a deep neural network, and that classification is used to associate cumulative behaviors with specific images and the innate behaviors of the agent population. For example, the bark of a dog or its images to be considered as cowardness in the agents (Vehicle 2a in Table 2). This type of approach can serve as an alternative to existing approaches to classification such as multi-agent deep reinforcement learning [66]. 
+
+Cumulative culture [67, 68] can also serve as a guide to explaining behaviors exhibited by BV collectives. Populations composed of the same vehicle type (Table 2) exhibits different coherent behaviors depending on whether they are presented with a fixed (Figure 7) or moving (Figure 8) stimulus. In a typical collective behavior model, there is some form of communication between the agents as they align  their behavior. In this case, specific BV configurations lead to specific types of cultural traditions (see Table 2), which in turn lead to convergent behaviors. While coordination (and in turn communication) is non-existent in the BV collectives instantiation, cumulative behavior nevertheless provides a means for convergent behavior. This is distinct from coordinated collective behavior such as that observed in bird flocks, fish schools, and insect swarms [69-71]. We can enforce intra-agent interaction by implementing interaction rules [72-74] that promote intra-agent interaction. In any case, BV collectives provide an opportunity to observe and analyze emergent behavioral modes by presenting different stimuli types to provoke behavioral variety. 
+
+### Limitations and Future Issues
+One issue we face is the limited biological realism of our models. We use abstractions of concepts such as plasticity, innateness, and embodiment to characterize this process. Yet do our models really capture something that would be useful to understanding the development of nervous systems? Our instantiations resemble so-called toy models of evolutionary processes [75], which allow us to represent biological processes in a simplistic manner. 
+
+Another issue that we face in building developing networks (where nodes are added dynamically) is the issue of modularity. In complex brains across a wide range of organisms, mature brains tend to be modular, or divided into structural and functional subcomponents. This is both consistent and inconsistent with what we observe in our developmental models. In the case of the BraGenBrain implementation, partial solutions do not necessarily equal the global solution. This means traditional approaches to emergent complexity in genetic algorithms such as the building block method [76] are not suitable for building progressively larger brains. 
+
+In conclusion, this work leads in a number of promising future directions.  These might include scaling up the complexity of simulated nervous systems, or adding higher-order representational systems such as semantic kernels [77]. In the case of the former, we found that even moderately large numbers of neurons are computationally implausible using conventional forms of representation. This limitation  might be overcome with a combination of high-performance computing techniques and multicore algorithms. We can also overcome the limitations of size by making each neuron richer in terms of the information it conveys. Adding a semantic component to small connectomes might provide an alternative means of understanding how mental concepts emerge from brains.  
 
 ### References
 [1] Kaiser, M. (2017). Mechanisms of Connectome Development. _Trends in Cognitive Sciences_, 21(9), P703-P717. doi:10.1016/j.tics.2017.05.010.
 
 [2]  Alicea, B. (2017). The Emergent Connectome in Caenorhabditis elegans Embryogenesis. _BioSystems_, 173, 247-255. 
 
-[3] Larson, S.D., Gleeson, P., & Brown, A.E.X. (2018). Connectome to behaviour: modelling Caenorhabditis elegans at cellular resolution. _Philosophical Transactions of the Royal Society of London B_, 373(1758), 20170366. doi:10.1098/rstb.2017.0366.
+[3] Larson, S.D., Gleeson, P., & Brown, A.E.X. (2018). Connectome to behaviour: modelling _Caenorhabditis elegans_ at cellular resolution. _Philosophical Transactions of the Royal Society of London B_, 373(1758), 20170366. doi:10.1098/rstb.2017.0366.
 
 [4] Fan, X. & Markram, H. (2019). A Brief History of Simulation Neuroscience. _Frontiers in Neuroinformatics_, doi:10.3389/fninf.2019.00032.
 
@@ -330,40 +310,140 @@ Possible Implementation for modeling neural plasticity using multisensory inputs
 
 [8] Smith, J.L. & Schoenwolf, G.C. (1997). Neurulation: coming to closure. _Trends in Neurosciences_, 20(11), P510-P517. doi:10.1016/S0166-2236(97)01121-1.
 
-[9] Eichler, K., Li, F., Litwin-Kumar, A., Park, Y., Andrade, I., Schneider-Mizell, C.M., Saumweber, T., Huser, A., Eschbach, C., Gerber, B., Fetter, R.D., Truman, J.W., Priebe, C.E., Abbott, L.F., Thum, A.S., Zlatic, M., & Cardona, A. (2017). The complete connectome of a learning and memory centre in an insect brain. _Nature_, 548(7666), 175-182. doi:10.1038/nature23455
+[9] Sporns, O., Chialvo, D.R., Kaiser, M., & Hilgetag, C.C. (2004). Organization, development and function of complex brain networks. _Trends in Cognitive Sciences_, 8(9), 418-425.
 
-[10] Craddock, R.C., Tungaraza, R.L., & Milham, M.P. (2015). Connectomics and new approaches for analyzing human brain functional connectivity. _Gigascience_, 4, 13.
+[10] Eichler, K., Li, F., Litwin-Kumar, A., Park, Y., Andrade, I., Schneider-Mizell, C.M., Saumweber, T., Huser, A., Eschbach, C., Gerber, B., Fetter, R.D., Truman, J.W., Priebe, C.E., Abbott, L.F., Thum, A.S., Zlatic, M., & Cardona, A. (2017). The complete connectome of a learning and memory centre in an insect brain. _Nature_, 548(7666), 175-182. doi:10.1038/nature23455
 
-[11] Towlson, E.K., Vertes, P.E., Ahnertm, S.E., Schafer, W.R., & Bullmore, E.T. (2013). The rich club of the C. elegans neuronal connectome. _Journal of Neuroscience_, 33(15), 6380-6387. doi:10.1523/JNEUROSCI.3784-12.2013.
+[11] Craddock, R.C., Tungaraza, R.L., & Milham, M.P. (2015). Connectomics and new approaches for analyzing human brain functional connectivity. _Gigascience_, 4, 13.
 
-[12] Sabrin, K.M & Dovrolis, C. (2017). The hourglass effect in hierarchical dependency networks. _Network Science_, 5(4), 490-528.
+[12] Bennett, S.H., Kirby, A.J. and Finnerty, G.T. (2018). Rewiring the Connectome: evidence and effects. _Neuroscience and Biobehavioral Reviews_, 88, 51–62.
 
-[13] Kriegeskorte, N. & Douglas, P.K. (2018). Cognitive computational neuroscience. _Nature Neuroscience_, 21, 1148–1160.
+[13] Reichert, H. (2009). Evolutionary conservation of mechanisms for neural regionalization, proliferation and interconnection in brain development. _Biological Letters_, 5(1), 112-116.
 
-[14] Couzin, I. & Krause, J. (2003). Self-Organization and Collective Behavior in Vertebrates. _Advances in the Study of Behavior_, 32, 1-75 doi:10.1016/S0065-3454(03)01001-5.
+[14] Stiles, J. and Jernigan, T.L. (2010). The Basics of Brain Development. _Neuropsychological Review_, 20(4), 327–348.
 
-[15] Neftci, E.O. & Averbeck, B.B. (2019). Reinforcement learning in artificial and biological systems. _Nature Machine Intelligence_, 1, 133–143. 
+[15] McCulloch, W.S. (1965). Embodiments of Mind. MIT Press, Cambridge, MA.
 
-[16] Drugan, M.M. (2019). Reinforcement learning versus evolutionary computation: A survey on hybrid algorithms. _Swarm and Evolutionary Computation_, 44, 228-246.
+[16] Towlson, E.K., Vertes, P.E., Ahnertm, S.E., Schafer, W.R., & Bullmore, E.T. (2013). The rich club of the _C. elegans_ neuronal connectome. _Journal of Neuroscience_, 33(15), 6380-6387. doi:10.1523/JNEUROSCI.3784-12.2013.
 
-[17] Munakata, Y. & Pfaffly, J. (2004). Hebbian learning and development. _Developmental Science_, 7(2), 141–148.
+[17] Sabrin, K.M & Dovrolis, C. (2017). The hourglass effect in hierarchical dependency networks. _Network Science_, 5(4), 490-528.
 
-[18] Khaluf, Y., Ferrante, E., Simoens, P., & Huepe, C. (2017). Scale invariance in natural and artificial collective systems: a review. _Journal of the Royal Society Interface_, 14, 20170662. doi:10.1098/rsif.2017.0662.
+[18] Farmer, D.J. (1990). Rosetta Stone for Connectionism. _Physica D_, 42(1-3), 153-187.
 
-[19] Henriksen, S., Pang, R., & Wronkiewicz, M. (2016). A simple generative model of the mouse mesoscale connectome. _eLife_, 5, e12366. doi:10.7554/eLife.12366.
+[19] Munakata, Y. & McClelland, J.L. (2003). Connectionist models of development. _Developmental Science_, 6(4), 413–429.
 
-[20] Soh, Z., Nishikawa, S., Kurita, Y., Takiguchi, N., & Tsuji, T. (2016). A Mathematical Model of the Olfactory Bulb for the Selective Adaptation Mechanism in the Rodent Olfactory System. _PLoS One_, 11(12), e0165230. doi: 10.1371/journal.
+[20] Shultz, R. & Mareschal, D. (1997). Rethinking Constructivism: perspectives innateness, learning, connectionist on development. _Cognitive Development_, 12, 563-586.
 
-[21] Li, Z. & Hopfield, J.J. (1989). Modeling the Olfactory Bulb and its Neural Oscillatory Processings. _Biological Cybernetics_, 61, 379-392.
+[21] Mareschal, D. & Shultz, R. (1996). Generative Connectionist Networks and Constructivist Cognitive Development. _Cognitive Development_, 11, 571-603.
 
-[22] Nagayama, S., Enerva, A., Fletcher, M. L., Masurkar, A.V., Igarashi, K.M., Mori, K., & Chen, W.R. (2010). Differential axonal projection of mitral and tufted cells in the mouse main olfactory system. _Frontiers in Neural Circuits_, 4(120). doi: 10.3389/fncir.2010.00120.
+[22] Bateson, P. & Laland, K.N. (2013). Tinbergen’s four questions: an appreciation and an update. _Trends in Ecology and Evolution_, 28(12), 712-718.
 
-[23] Shepherd, G.M., Chen, Willhite, W.R. D., Migliore, M., & Greer C.A. (2007). The olfactory granule cell: From classical enigma to central role in olfactory processing. _Brain Research Reviews_, 55, 373-382.
+[23] Rinaldi, L. & Karmiloff-Smith, A. (2017). Intelligence as a Developing Function: a neuroconstructivist approach. _Journal of Intelligence_, 5, 18. doi:10.3390/jintelligence5020018.
 
-[24] Sanger, T. D. (1989). Optimal Unsupervised Learning in a Single-Layer Linear Feedforward Neural Network. _Neural Networks_, 2, 459-473.
+[24] van Rijn, H., van Someren, M., & van der Maas, H. (2002). Modeling developmental transitions on the balance scale task. _Cognitive Science_, 107, 1–31.
 
-[25] Smith, D.V. & St John, S.J. (1999). Neural coding of gustatory information. _Current Opinion in Neurobiology_, 9, 427-435.
+[25] Quartz, S.R. & Sejnowski, T.J. (1997). The Neural Basis of Cognitive Development: a constructivist manifesto. _Behavioral and Brain Sciences_, 20, 537–596.
 
-[26] Wu, A., Dvoryanchikov, G., Pereira, E., Chaudhari, N., & Roper, S. D. (2015). Breadth of tuning in taste afferent neurons varies with stimulus strength. _Nature Communications_, 6, 8171. doi: 10.1038/ncomms9171.
+[26] Quartz, S.R. (1999). The constructivist brain. _Trends in Cognitive Science_, 3(2), P48-57. doi:10.1016/S1364-6613(98)01270-4.
 
+[27] Zador, A.M. (2019). A critique of pure learning and what artificial neural networks can learn from animal brains. _Nature Communications_, 10, 3770.
 
+[28] Kriegeskorte, N. & Douglas, P.K. (2018). Cognitive computational neuroscience. _Nature Neuroscience_, 21, 1148–1160.
+
+[29] Couzin, I. & Krause, J. (2003). Self-Organization and Collective Behavior in Vertebrates. _Advances in the Study of Behavior_, 32, 1-75 doi:10.1016/S0065-3454(03)01001-5.
+
+[30] Kelso, J.A.S. (1995). Dynamic Patterns: The Self-Organization of Brain and Behavior. MIT Press, Cambridge, MA.
+
+[31] Port, R.F. & van Gelder, T. (1998). Mind as Motion: Explorations in the Dynamics of Cognition. MIT Press, Cambridge, MA.
+
+[32] Shapiro, L. (2010). Embodied Cognition. Routledge, New York.
+
+[33] Varela, F., Thompson, E. & Rosch, E. (1991). The Embodied Mind: Cognitive Science and Human Experience. MIT Press, Cambridge, MA.
+
+[34] Chemero, A. (2009). Radical Embodied Cognitive Science. MIT Press, Cambridge, MA.
+
+[35] Smith, L.B. & Thelen, E. (2003). Development as dynamic system. Trends in Cognitive Science, 7(8), 343–348.
+
+[36] Beer, R.D. & Williams, P.L. (2014). Information Processing and Dynamics in Minimally Cognitive Agents. _Cognitive Science_, 39(1), 1-38. 
+
+[37] Wilson, M. (2002). Six views of embodied cognition. _Psychonomic Bulletin & Review_, 9(4), 625-636.
+
+[38] Graziano, M.S.A. (2008). The Intelligent Movement Machine: an Ethological perspective on the primate motor system. Oxford University Press, Oxford, UK.
+
+[39] Thelen, E. & Smith, L.B. (1996). A Dynamic Systems Approach to the Development of Cognition and Action. MIT Press, Cambridge, MA.
+
+[40] Richardson, M.J., Shockley, K., Fajen, B.R., Riley, M.A., & Turvey, M.T. (2008). Ecological Psychology: Six Principles for an Embodied-Embedded Approach to Behavior. In "Handbook of Cognitive Science: An Embodied Approach". P. Calvo & T. Gomila, eds. pgs. 161-187. Elsevier, Amsterdam. doi:10.1016/B978-0-08-046616-3.00009-8.
+
+[41] Khaluf, Y., Ferrante, E., Simoens, P., & Huepe, C. (2017). Scale invariance in natural and artificial collective systems: a review. _Journal of the Royal Society Interface_, 14, 20170662. doi:10.1098/rsif.2017.0662.
+
+[42] McCandlish, D.M. (2011). Visualizing Fitness Landscapes. _Evolution_, 65(6), 1544–1558. doi:10.1111/j.1558-5646.2011.01236.x.
+
+[43] Conant, R. & Ashby, W.R. (1970). Every good regulator of a system must be a model of that system. _International Journal of Systems Science_, 1(2), 89-97.
+
+[44] Soh, Z., Nishikawa, S., Kurita, Y., Takiguchi, N., & Tsuji, T. (2016). A Mathematical Model of the Olfactory Bulb for the Selective Adaptation Mechanism in the Rodent Olfactory System. PLoS One, 11(12), e0165230. doi: 10.1371/journal.
+
+[45] Li, Z. & Hopfield, J.J. (1989). Modeling the Olfactory Bulb and its Neural Oscillatory Processings. Biological Cybernetics, 61, 379-392.
+
+[46] Nagayama, S., Enerva, A., Fletcher, M. L., Masurkar, A.V., Igarashi, K.M., Mori, K., & Chen, W.R. (2010). Differential axonal projection of mitral and tufted cells in the mouse main olfactory system. Frontiers in Neural Circuits, 4(120). doi: 10.3389/fncir.2010.00120.
+
+[47] Shepherd, G.M., Chen, Willhite, W.R. D., Migliore, M., & Greer C.A. (2007). The olfactory granule cell: From classical enigma to central role in olfactory processing. Brain Research Reviews, 55, 373-382.
+
+[48] Smith, D.V. & St John, S.J. (1999). Neural coding of gustatory information. Current Opinion in Neurobiology, 9, 427-435.
+
+[49] Wu, A., Dvoryanchikov, G., Pereira, E., Chaudhari, N., & Roper, S. D. (2015). Breadth of tuning in taste afferent neurons varies with stimulus strength. Nature Communications, 6, 8171. doi: 10.1038/ncomms9171.
+
+[50] Sanger, T. D. (1989). Optimal Unsupervised Learning in a Single-Layer Linear Feedforward Neural Network. Neural Networks, 2, 459-473.
+
+[51] Henriksen, S., Pang, R., & Wronkiewicz, M. (2016). A simple generative model of the mouse mesoscale connectome. eLife, 5, e12366. doi:10.7554/eLife.12366.
+
+[52] Amari, S. & Maginu, K. (1988). Statistical neurodynamics of associative memory. Neural Networks, 1 (1), 63-73.
+
+[53] Eliasmith, C. & Trujillo, O. (2014). The use and abuse of large-scale brain models. Current Opinion in Neurobiology, 25, 1-6. 
+
+[54] Neftci, E.O. & Averbeck, B.B. (2019). Reinforcement learning in artificial and biological systems. Nature Machine Intelligence, 1, 133–143. 
+
+[55] Drugan, M.M. (2019). Reinforcement learning versus evolutionary computation: A survey on hybrid algorithms. Swarm and Evolutionary Computation, 44, 228-246.
+
+[56] Munakata, Y. & Pfaffly, J. (2004). Hebbian learning and development. Developmental Science, 7(2), 141–148.
+
+[57] Oyama, S., Griffiths, P.E., & Gray, R.D. (2000). Cycles of Contingency: developmental systems and evolution. MIT Press, Cambridge, MA
+
+[58] Gutkin, B., Pinto D., & Ermentrout B. (2003). Mathematical Neuroscience: From Neurons to Circuits to Systems. Journal of Physiology Paris, 97, 209-219.
+
+[59] Bower, J. (2013). 20 Years of Computational Neuroscience. New York: Springer. 
+
+[60] Richards, B.A., Lillicrap, T.P., Beaudoin, P., Bengio, Y., Bogacz, R., Christensen, A., Clopath, C., Costa, R.P., de Berker, A., Ganguli, S., Gillon, C.J., Hafner, D., Kepecs, A., Kriegeskorte, N., Latham, P., Lindsay, G.W. Miller, K.D., Naud, R., Pack, C.C., Poirazi, P., Roelfsema, P., Sacramento, J., Saxe, A., Scellier, B., Schapiro, A.C., Senn, W., Wayne, G., Yamins, D., Zenke, F., Zylberberg, J., Therien,, D. & Kording, K.P. (2019). A deep learning framework for neuroscience. Nature Neuroscience, 22, 1761–1770.
+
+[61] Patterson, T., Parton A., Langrock, R. Blackwell, P., Thomas, L., & King R. (2017). Statistical modelling of individual animal movement: an overview of key methods and a discussion of practical challenges. AStA Advances in Statistical Analysis, 101 (4), 399–438.
+
+[62] Stein, B.E., Stanford, T.R., & Rowland, B.A. (2014). Development of multisensory integration from the perspective of the individual neuron. Nature Reviews Neuroscience, 15(8), 520-535.
+
+[63] Rego, C., Gamboa, D., Glover, F., and Osterman, C. (2011), Traveling salesman problem heuristics: leading methods, implementations and latest advances. European Journal of Operational Research, 211(3), 427–441. doi:10.1016/j.ejor.2010.09.010.
+
+[64] Dvoretskii, S. & Alicea, B. (2019). Modeling Neural Development with Braitenberg Vehicles. INCF Neuroinformatics Conference, University of Warsaw, Poland.
+
+[65] MacGregor, J.N. & Chu, Y. (2011). Human Performance on the Traveling Salesman and Related Problems: a review. Journal of Problem Solving, 3(2). doi:10.7771/1932-6246.1090.
+
+[66] Hernandez-Leal, P., Kartal, B., & Taylor, M.E. (2019). A survey and critique of multiagent deep reinforcement learning. Autonomous Agents and Multi-Agent Systems, 33(6), 750-797.
+
+[67] Sasaki, T. & Biro, D. (2017). Cumulative culture can emerge from collective intelligence in animal groups. Nature Communications, 8, 15049. doi:10.1038/ncomms15049.
+
+[68] Mesoudi, A. & Thornton, A. (2018). What is cumulative cultural evolution? Proceedings of the Royal Society of London B, 285(1880), 20180712. http://doi.org/10.1098/rspb.2018.0712.
+
+[69] Hemelrijk, C.K. & Hildenbrandt, H. (2012). Schools of fish and flocks of birds: their shape and internal structure by self-organization. Interface Focus, 2(6), 726–737. doi:10.1098/rsfs.2012. 0025.
+
+[70] Kolpas, A., Busch, M., Li, H.,Couzin, I.D., Petzold, L. & Moehlis, J. (2013) How the spatial positions of individuals affects their influence on swarms: a numerical comparison of two popular swarm dynamics models, PLoS ONE, (8)3, e58525.
+
+[71] Herbert-Read, J.E. (2016). Understanding how animal groups achieve coordinated movement. Journal of Experimental Biology, 219, 2971-2983 doi:10.1242/jeb.129411.
+
+[72] Astudillo Fernandez, A., & Deneubourg, J.-L. (2011). On following behaviour as a mechanism for collective movement. Journal of Theoretical Biology, 284(1), 7-15. doi:10.1016/j.jtbi.2011.06.001.
+
+[73] Pillot, M.-H., Gautrais, J., Arrufat, P., Couzin, I.D., Bon, R., & Deneubourg, J.-L. (2011) Scalable Rules for Coherent Group Motion in a Gregarious Vertebrate. PLoS One, 6(1), e14487. doi:10.1371/journal.pone.0014487
+
+[74] Tang, J., Leu, G., & Abbass, H.A. (2018). Networking the Boids Is More Robust Against Adversarial Learning. IEEE Transactions on Network Science and Engineering, 5(2), 141-155.
+
+[75] Alicea, B. & Gordon, R. (2014). Toy Models for Macroevolutionary Patterns and Trends. Biosystems, 122, 25-37.
+
+[76] Goldberg, D.E. (2000). The Design of Innovation: Lessons from Genetic Algorithms, Lessons for the Real World. Technological Forecasting and Social Change, 64(1), 7-12.
+
+[77] Alicea, B. (2012). Contextual Geometric Structures: modeling the fundamental components of cultural behavior. Proceedings of Artificial Life, 13, 147-154.
