@@ -64,8 +64,6 @@ Our approach relies upon several models of regulation that may also play a role 
 #### Computational model of Developmental Neuroscience
 One goal of this project is to create a generalized computational model of neurodevelopment. This will allow us to investigate a large number of potential research questions. In general, we have found that there are three ways to approach an approximation of development and plasticity. Two of these approaches are a forward mapping, and the third is an inverse mapping. The first is to use a correlation (or covariance) matrix approach, where all neural units in the nervous system are compared with every other neural unit. This results in pairwise comparisons that can lead to connectome network maps [51]. The second approach is to add nodes and arcs sequentially to a simple set of I/O connections. In this case, we get a more explicit network topology, and can observe phenomena such as preferential attachment. A third approach is to prune connections from a fully-formed network engaged in hard-wired behaviors. Using this approach, one can come to understand exactly which connections and neurons are essential for the execution of a behavior.
 
-
-
 #### Software Instantiations.
 Currently, there are three software instantiations of the software: BraGenBrain, modeling neural plasticity using multisensory inputs, and so-called BVs as Deep Learning. We will first discuss the details and limitations of the BraGenBrain approach, then do the same for the multisensory plasticity approach, and finally discuss the collective BVs and their cumulative behavior. 
  
