@@ -1,4 +1,4 @@
-# Modeling Neural Plasticity with Multisensory Braitenberg Vehicles
+# MultiLearn: Modeling Neural Plasticity with Multisensory Braitenberg Vehicles
 [Link to my own repo](https://github.com/gongziyida/Modeling-Neural-Plasticity-with-Multisensory-Braitenberg-Vehicles)
 
 ## Content
